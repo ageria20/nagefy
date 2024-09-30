@@ -33,7 +33,7 @@ public class CategoryService {
         found.setName(body.name());
         return this.categoriesRepository.save(found);
     }
-    
+
     public void deleteCategory(UUID id){
         Catogory found = this.findById(id);
         this.categoriesRepository.delete(found);
