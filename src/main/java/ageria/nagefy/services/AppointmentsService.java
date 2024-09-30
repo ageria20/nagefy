@@ -27,6 +27,10 @@ public class AppointmentsService {
     @Autowired
     TreatmentsService treatmentsService;
 
+    @Autowired
+    DiscountsService discountsService;
+
+
 
     public Appointment findById(UUID id){
         return this.appointmentsRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
@@ -35,6 +39,7 @@ public class AppointmentsService {
     public Appointment saveAppointment(AppointmentDTO body){
         Staff staffFromDB = this.staffsService.findById(body.staffMember().getId());
         User userFromDB = this.usersService.findById(body.user().getId());
+        Discount discountFromDB = this.discountsService.findById(body.discount().getId());
         Treatment treatmentFromDB = this.treatmentsService.findById(body.treatment().getId());
         if(this.appointmentsRepository.existsByStaffAndStartTime(staffFromDB, LocalDateTime.from(body.startDateTime()))){
             throw new BadRequestException("STAFF MEMBER ALREADY OCCUPIED");
@@ -47,7 +52,15 @@ public class AppointmentsService {
                 body.startDateTime(),
                 body.endDateTime(),
                 body.cancelled(),
+                discountFromDB,
+                treatmentFromDB.getPrice()
 
         );
+        return this.appointmentsRepository.save(newAppointment);
+    }
+
+    public void findByIdAndDelete(UUID id){
+        Appointment found = this.findById(id);
+        this.appointmentsRepository.delete(found);
     }
 }

@@ -50,4 +50,17 @@ public class Appointment {
     private Discount discount;
 
     private double total;
+
+    public Appointment(User userFromDB, Treatment treatmentFromDB, Staff staffFromDB, String paymentMethod, LocalDateTime startDate, LocalDateTime endDate, boolean cancelled, Discount discountFromDB, double prices) {
+    this.user = userFromDB;
+    this.treatment = treatmentFromDB;
+    this.staff = staffFromDB;
+    this.paymentMethod = paymentMethod;
+    this.startTime = startDate;
+    this.endTime = endDate;
+    this.cancelled = cancelled;
+    this.discount = discountFromDB;
+    this.total = prices;
+
+    }
 }
