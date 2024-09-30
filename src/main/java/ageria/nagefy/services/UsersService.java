@@ -43,4 +43,18 @@ public class UsersService {
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
         return this.userRepository.save(newUser);
     }
+
+    public User findByIdAndUpdate(UUID id, UserDTO body){
+        User found = this.findById(id);
+        found.setName(body.name());
+        found.setSurname(body.surname());
+        found.setTelephone(body.telephone());
+        found.setEmail(body.email());
+        return this.userRepository.save(found);
+    }
+
+    public void deleteUser(UUID id){
+        User found = this.findById(id);
+        this.userRepository.delete(found);
+    }
 }
