@@ -6,20 +6,28 @@ import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-public class UserService {
+public class UsersService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder bcrypt;
 
 
 
     public User findById(UUID id){
         return this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+    }
+
+    public User findFromEmail(String email){
+        return this.userRepository.findByEmail(email);
     }
 
     public User saveUser(UserDTO body){
@@ -29,7 +37,10 @@ public class UserService {
         User newUser = new User(
                 body.name(),
                 body.surname(),
-                body.
+                body.telephone(),
+                body.email(),
+                bcrypt.encode(body.password())
         );
+        return this.userRepository.save(newUser);
     }
 }

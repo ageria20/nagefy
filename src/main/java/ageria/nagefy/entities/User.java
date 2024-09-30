@@ -1,6 +1,8 @@
 package ageria.nagefy.entities;
 
 
+import ageria.nagefy.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,6 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"password", "authorities", "enabled", "accountNonLocked", "credentialsNonExpired", "accountNonExpired", "username"})
 public class User implements UserDetails {
 
     @Id
@@ -32,13 +35,20 @@ public class User implements UserDetails {
 
     private String telephone;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
     private Role role;
+
+    public User(String name, String surname, String telephone, String email, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.telephone = telephone;
+        this.email = email;
+        this.password = password;
+        this.role = Role.USER;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.role.getName()));
+        return List.of(new SimpleGrantedAuthority(this.role.name()));
     }
 
     @Override

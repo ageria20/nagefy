@@ -1,6 +1,7 @@
 package ageria.nagefy.entities;
 
 
+import ageria.nagefy.enums.Role;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -24,5 +25,5 @@ public class Staff {
     private UUID id;
     private String name;
     private String email;
-
+    private Role role;
 }

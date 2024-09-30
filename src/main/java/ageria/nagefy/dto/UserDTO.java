@@ -1,5 +1,6 @@
 package ageria.nagefy.dto;
 
+import ageria.nagefy.entities.User;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 

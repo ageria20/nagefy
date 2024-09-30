@@ -1,23 +1,33 @@
 package ageria.nagefy.security;
 
 
+import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.UnauthorizedException;
+import ageria.nagefy.services.UsersService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.net.Authenticator;
+import java.util.UUID;
 
 @Component
 public class JWTCheckFilter extends OncePerRequestFilter {
 
     @Autowired
     JWTTools jwtTools;
+
+    @Autowired
+    UsersService usersService;
 
 
     @Override
@@ -29,7 +39,9 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String accessToken = authHeader.substring(7);
         jwtTools.verifyToken(accessToken);
         String id = this.jwtTools.extractIdFromToken(accessToken);
-        // TODO prendere lo user dal db per autenticarlo tramite token
+        User userFromDB = this.usersService.findById(UUID.fromString(id));
+        Authentication auth = new UsernamePasswordAuthenticationToken(userFromDB, null, userFromDB.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
         filterChain.doFilter(request, response);
     }
 

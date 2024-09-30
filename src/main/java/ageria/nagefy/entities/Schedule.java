@@ -26,6 +26,8 @@ public class Schedule {
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
-    private LocalDateTime from;
-    private LocalDateTime to;
+    @Column(name = "from_time")
+    private LocalDateTime fromTime;
+    @Column(name = "to_time")
+    private LocalDateTime toTime;
 }
