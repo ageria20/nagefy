@@ -28,9 +28,5 @@ public class TreatmentService {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
-    @ManyToOne
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
-
 
 }

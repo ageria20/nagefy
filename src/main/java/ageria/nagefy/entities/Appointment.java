@@ -32,9 +32,8 @@ public class Appointment {
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
-    @ManyToOne
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
+   @Column(name = "payment_method")
+    private String paymentMethod;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -49,4 +48,6 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "discount_id")
     private Discount discount;
+
+    private double total;
 }

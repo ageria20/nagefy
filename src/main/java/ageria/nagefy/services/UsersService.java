@@ -39,8 +39,8 @@ public class UsersService {
                 body.surname(),
                 body.telephone(),
                 body.email(),
-                bcrypt.encode(body.password())
-        );
+                bcrypt.encode(body.password()),
+                "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
         return this.userRepository.save(newUser);
     }
 }
