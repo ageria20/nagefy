@@ -2,10 +2,7 @@ package ageria.nagefy.entities;
 
 
 import ageria.nagefy.enums.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +22,12 @@ public class Staff {
     private UUID id;
     private String name;
     private String email;
+    @Enumerated(EnumType.STRING)
     private Role role;
+
+    public Staff(String name, String email) {
+        this.name = name;
+        this.email = email;
+        this.role = Role.EMPLOYEE;
+    }
 }

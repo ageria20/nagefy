@@ -25,4 +25,11 @@ public class Discount {
     private String description;
     private double percentage;
     private LocalDateTime duration;
+
+
+    public Discount(String description, LocalDateTime duration, double percentage) {
+        this.description = description;
+        this.percentage = percentage;
+        this.duration = duration;
+    }
 }

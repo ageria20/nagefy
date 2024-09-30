@@ -35,7 +35,7 @@ public class User implements UserDetails {
 
     private String telephone;
     private String avatar;
-
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public User(String name, String surname, String telephone, String email, String password, String avatar) {
