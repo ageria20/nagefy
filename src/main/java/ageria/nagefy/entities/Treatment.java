@@ -27,4 +27,10 @@ public class Treatment {
     private String name;
     private double price;
     private LocalDateTime duration;
+
+    public Treatment(String name, LocalDateTime duration, Long price) {
+        this.name = name;
+        this.duration = duration;
+        this.price = price;
+    }
 }
