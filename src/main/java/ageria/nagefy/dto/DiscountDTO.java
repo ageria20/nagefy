@@ -1,13 +1,14 @@
 package ageria.nagefy.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
 public record DiscountDTO(@NotEmpty(message = "Description  is required")
                           String description,
-                          @NotEmpty(message = "Percentage  is required")
+                          @NotNull(message = "Percentage  is required")
                           Double percentage,
-                          @NotEmpty(message = "Duration  is required")
+                          @NotNull(message = "Duration  is required")
                           LocalDateTime duration) {
 }

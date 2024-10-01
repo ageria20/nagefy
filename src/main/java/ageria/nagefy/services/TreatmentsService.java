@@ -3,11 +3,17 @@ package ageria.nagefy.services;
 
 import ageria.nagefy.dto.TreatmentDTO;
 import ageria.nagefy.entities.Treatment;
+import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.TreatmentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -17,6 +23,11 @@ public class TreatmentsService {
     TreatmentsRepository treatmentsRepository;
 
 
+    public Page<Treatment> getAlLTreatments(int pages, int size, String sortBy) {
+        if (pages > 50) pages = 50;
+        Pageable pageable = PageRequest.of(pages, size, Sort.by(sortBy));
+        return this.treatmentsRepository.findAll(pageable);
+    }
 
     public Treatment findById(UUID id){
         return this.treatmentsRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
@@ -25,8 +36,9 @@ public class TreatmentsService {
     public Treatment saveTreatment(TreatmentDTO body){
         Treatment newTreatment = new Treatment(
                 body.name(),
-                body.duration(),
-                body.price()
+                body.price(),
+                body.duration()
+
         );
         return this.treatmentsRepository.save(newTreatment);
     }

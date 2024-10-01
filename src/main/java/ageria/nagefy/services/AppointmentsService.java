@@ -43,7 +43,7 @@ public class AppointmentsService {
     }
 
     public List<Appointment> getAppointments(UUID id){
-        return this.appointmentsRepository.findByUser(id);
+        return this.appointmentsRepository.findByUserId(id);
     }
 
 

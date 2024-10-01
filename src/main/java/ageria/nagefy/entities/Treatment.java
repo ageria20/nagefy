@@ -26,9 +26,9 @@ public class Treatment {
     private UUID id;
     private String name;
     private double price;
-    private LocalDateTime duration;
+    private int duration;
 
-    public Treatment(String name, LocalDateTime duration, Long price) {
+    public Treatment(String name, double price, int duration) {
         this.name = name;
         this.duration = duration;
         this.price = price;
