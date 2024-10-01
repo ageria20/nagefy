@@ -30,4 +30,10 @@ public class Schedule {
     private LocalDateTime fromTime;
     @Column(name = "to_time")
     private LocalDateTime toTime;
+
+    public Schedule(Staff staff, LocalDateTime fromTime, LocalDateTime toTime) {
+        this.staff = staff;
+        this.fromTime = fromTime;
+        this.toTime = toTime;
+    }
 }
