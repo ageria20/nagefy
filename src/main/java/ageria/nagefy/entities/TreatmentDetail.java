@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "treatments_service")
-public class TreatmentSchedule {
+public class TreatmentDetail {
 
     @Id
     @GeneratedValue
@@ -29,7 +29,7 @@ public class TreatmentSchedule {
     private Appointment appointment;
 
 
-    public TreatmentSchedule(Treatment treatment, Appointment appointment) {
+    public TreatmentDetail(Treatment treatment, Appointment appointment) {
         this.treatment = treatment;
         this.appointment = appointment;
     }

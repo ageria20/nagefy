@@ -1,29 +1,29 @@
 package ageria.nagefy.services;
 
 import ageria.nagefy.dto.TreatmentScheduleDTO;
-import ageria.nagefy.entities.TreatmentSchedule;
+import ageria.nagefy.entities.TreatmentDetail;
 import ageria.nagefy.exceptions.NotFoundException;
-import ageria.nagefy.repositories.TreatmentScheduleRepository;
+import ageria.nagefy.repositories.TreatmentDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-public class TreatmentScheduleService {
+public class TreatmentDetailsService {
 
 
     @Autowired
-    TreatmentScheduleRepository treatmentScheduleRepository;
+    TreatmentDetailsRepository treatmentScheduleRepository;
 
 
 
-    public TreatmentSchedule findById(UUID id){
+    public TreatmentDetail findById(UUID id){
         return this.treatmentScheduleRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
     }
 
-    public TreatmentSchedule saveTreatmentschedule(TreatmentScheduleDTO body){
-        TreatmentSchedule newTreatmentSchedule = new TreatmentSchedule(
+    public TreatmentDetail saveTreatmentschedule(TreatmentScheduleDTO body){
+        TreatmentDetail newTreatmentSchedule = new TreatmentDetail(
                 body.treatment(),
                 body.appointment()
         );
@@ -31,7 +31,7 @@ public class TreatmentScheduleService {
     }
 
     public void deleteTreatmentSchedule(UUID id){
-        TreatmentSchedule found = this.findById(id);
+        TreatmentDetail found = this.findById(id);
         this.treatmentScheduleRepository.delete(found);
     }
 }
