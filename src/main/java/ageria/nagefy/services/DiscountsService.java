@@ -3,9 +3,14 @@ package ageria.nagefy.services;
 
 import ageria.nagefy.dto.DiscountDTO;
 import ageria.nagefy.entities.Discount;
+import ageria.nagefy.entities.Staff;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.DiscountsRepoditory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -15,6 +20,13 @@ public class DiscountsService {
 
     @Autowired
     DiscountsRepoditory discountsRepoditory;
+
+
+    public Page<Discount> getAlLDiscount(int pages, int size, String sortBy) {
+        if (pages > 50) pages = 50;
+        Pageable pageable = PageRequest.of(pages, size, Sort.by(sortBy));
+        return this.discountsRepoditory.findAll(pageable);
+    }
 
 
     public Discount findById(UUID id){
