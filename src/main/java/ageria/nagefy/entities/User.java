@@ -1,7 +1,9 @@
 package ageria.nagefy.entities;
 
 
+import ageria.nagefy.dto.AppointmentDTO;
 import ageria.nagefy.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -37,6 +39,10 @@ public class User implements UserDetails {
     private String avatar;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Appointment> appointmentList;
 
     public User(String name, String surname, String telephone, String email, String password, String avatar) {
         this.name = name;

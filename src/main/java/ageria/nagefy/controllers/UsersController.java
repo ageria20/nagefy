@@ -89,8 +89,6 @@ public class UsersController {
     }
 
 
-
-
     @DeleteMapping("/me")
     public void deleteEmployeeProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
         this.userService.deleteUser(currentAuthenticatedUser.getId());

@@ -2,6 +2,8 @@ package ageria.nagefy.entities;
 
 
 import ageria.nagefy.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,6 +16,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties({"authorities", "enabled", "accountNonLocked", "credentialsNonExpired", "accountNonExpired"})
 public class Staff {
 
     @Id
@@ -22,6 +25,7 @@ public class Staff {
     private UUID id;
     private String name;
     private String email;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
