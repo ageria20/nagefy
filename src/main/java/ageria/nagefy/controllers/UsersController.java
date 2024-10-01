@@ -1,9 +1,98 @@
 package ageria.nagefy.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import ageria.nagefy.dto.UserDTO;
+import ageria.nagefy.entities.Appointment;
+import ageria.nagefy.entities.User;
+import ageria.nagefy.exceptions.BadRequestException;
+import ageria.nagefy.services.AppointmentsService;
+import ageria.nagefy.services.UsersService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
 public class UsersController {
+
+    @Autowired
+    UsersService usersService;
+
+    @Autowired
+    UsersService userService;
+
+    @Autowired
+    AppointmentsService appointmentsService;
+
+
+    // 1. GET access only the ADMIN
+    @GetMapping
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Page<User> findAll(@RequestParam(defaultValue = "0") int pages,
+                              @RequestParam(defaultValue = "10") int size,
+                              @RequestParam(defaultValue = "id") String sortBy) {
+        return this.userService.getAllUsers(pages, size, sortBy);
+    }
+
+    // POST USER
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public User creaUser(@RequestBody @Validated UserDTO body, BindingResult validation){
+        if(validation.hasErrors()){
+            String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        }
+        return this.userService.saveUser(body);
+    }
+
+    // PUT USER
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public User updateUser(@PathVariable UUID id, @RequestBody @Validated UserDTO body, BindingResult validation){
+        if(validation.hasErrors()){
+            String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        }
+        return this.userService.findByIdAndUpdate(id, body);
+    }
+
+    @PutMapping("/me")
+    @ResponseStatus(HttpStatus.CREATED)
+    public User updateUserProfile(@AuthenticationPrincipal User currAuthUser, @RequestBody UserDTO body ){
+        return this.userService.findByIdAndUpdate(currAuthUser.getId(), body);
+    }
+
+    // DELETE USER
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String deleteUser(@PathVariable UUID id){
+            this.userService.deleteUser(id);
+            return "USER DELETED CORRECTLY";
+    }
+
+    // GET ME endpoint
+    @GetMapping("/me")
+    public List<Appointment> getUserBooking(@AuthenticationPrincipal User currentAuthenticatedUser) {
+        return this.appointmentsService.getAppointments((currentAuthenticatedUser.getId()));
+    }
+
+
+
+
+    @DeleteMapping("/me")
+    public void deleteEmployeeProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
+        this.userService.deleteUser(currentAuthenticatedUser.getId());
+    }
 }

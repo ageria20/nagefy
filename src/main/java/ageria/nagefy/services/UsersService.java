@@ -6,6 +6,10 @@ import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,11 @@ public class UsersService {
     PasswordEncoder bcrypt;
 
 
+    public Page<User> getAllUsers(int pages, int size, String sortBy) {
+        if (pages > 50) pages = 50;
+        Pageable pageable = PageRequest.of(pages, size, Sort.by(sortBy));
+        return this.userRepository.findAll(pageable);
+    }
 
     public User findById(UUID id){
         return this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));

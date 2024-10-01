@@ -7,9 +7,14 @@ import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.AppointmentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -30,6 +35,16 @@ public class AppointmentsService {
     @Autowired
     DiscountsService discountsService;
 
+
+    public Page<Appointment> getAllAppointments(int pages, int size, String sortBy) {
+        if (pages > 50) pages = 50;
+        Pageable pageable = PageRequest.of(pages, size, Sort.by(sortBy));
+        return this.appointmentsRepository.findAll(pageable);
+    }
+
+    public List<Appointment> getAppointments(UUID id){
+        return this.appointmentsRepository.findByUser(id);
+    }
 
 
     public Appointment findById(UUID id){
