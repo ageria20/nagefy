@@ -4,14 +4,16 @@ import ageria.nagefy.entities.Discount;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.Treatment;
 import ageria.nagefy.entities.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record AppointmentDTO(@NotNull(message = "User id is required")
                              User user,
-                             @NotNull(message = "Treatment id is required")
-                             Treatment treatment,
+                             @NotNull(message = "Treatments are required")
+                             List<Treatment> treatments,
                              @NotNull(message = "Staff id is required")
                              Staff staffMember,
                              @NotNull(message = "Payment emthod is required")

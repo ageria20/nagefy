@@ -1,5 +1,6 @@
 package ageria.nagefy.controllers;
 
+import ageria.nagefy.dto.AppointmentDTO;
 import ageria.nagefy.dto.UserDTO;
 import ageria.nagefy.entities.Appointment;
 import ageria.nagefy.entities.User;
@@ -83,14 +84,24 @@ public class UsersController {
     }
 
     // GET ME endpoint
-    @GetMapping("/me")
+    @GetMapping("/me/appointments")
     public List<Appointment> getUserBooking(@AuthenticationPrincipal User currentAuthenticatedUser) {
         return this.appointmentsService.getAppointments((currentAuthenticatedUser.getId()));
     }
 
+    @PutMapping("/me/appointments")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Appointment createAppointment(@RequestBody @Validated AppointmentDTO body, BindingResult validation){
+        if (validation.hasErrors()){
+            String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        }
+        return this.appointmentsService.saveAppointment(body);
+    }
+
 
     @DeleteMapping("/me")
-    public void deleteEmployeeProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
+    public void deleteProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
         this.userService.deleteUser(currentAuthenticatedUser.getId());
     }
 }

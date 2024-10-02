@@ -14,8 +14,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentsService {
@@ -55,23 +58,38 @@ public class AppointmentsService {
         Staff staffFromDB = this.staffsService.findById(body.staffMember().getId());
         User userFromDB = this.usersService.findById(body.user().getId());
         Discount discountFromDB = this.discountsService.findById(body.discount().getId());
-        Treatment treatmentFromDB = this.treatmentsService.findById(body.treatment().getId());
+        List<Treatment> treatmentsFromDB = body.treatments().stream().map(treatment -> this.treatmentsService.findById(UUID.fromString(String.valueOf(treatment.getId())))).collect(Collectors.toList());
+        LocalDateTime startAppointment = body.startDateTime();
+        LocalDateTime endAppointment = startAppointment.plusMinutes(treatmentsFromDB.stream().mapToLong(duration -> duration.getDuration()).sum());
         if(this.appointmentsRepository.existsByStaffAndStartTime(staffFromDB, LocalDateTime.from(body.startDateTime()))){
             throw new BadRequestException("STAFF MEMBER ALREADY OCCUPIED");
         }
         Appointment newAppointment = new Appointment(
                 userFromDB,
-                treatmentFromDB,
+                treatmentsFromDB,
                 staffFromDB,
                 body.paymentMethod(),
-                body.startDateTime(),
-                body.endDateTime(),
+                startAppointment,
+                endAppointment,
                 body.cancelled(),
-                discountFromDB,
-                treatmentFromDB.getPrice()
+                treatmentsFromDB.stream().mapToDouble(price -> price.getPrice()).sum()
 
         );
         return this.appointmentsRepository.save(newAppointment);
+    }
+
+    public Appointment findByIdAndUpdate(UUID id, AppointmentDTO body){
+        Appointment appointmentFromDB = this.findById(id);
+        LocalDateTime startAppointment = body.startDateTime();
+        LocalDateTime endAppointment = startAppointment.plusMinutes(body.treatments().stream().mapToLong(duration -> duration.getDuration()).sum());
+        appointmentFromDB.setUser(body.user());
+        appointmentFromDB.setTreatmentsList(body.treatments());
+        appointmentFromDB.setStaff(body.staffMember());
+        appointmentFromDB.setPaymentMethod(body.paymentMethod());
+        appointmentFromDB.setStartTime(startAppointment);
+        appointmentFromDB.setEndTime(endAppointment);
+        appointmentFromDB.setTotal(body.treatments().stream().mapToDouble(price -> price.getPrice()).sum());
+        return this.appointmentsRepository.save(appointmentFromDB);
     }
 
     public void findByIdAndDelete(UUID id){

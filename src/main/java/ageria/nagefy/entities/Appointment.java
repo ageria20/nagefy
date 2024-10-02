@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -26,9 +27,11 @@ public class Appointment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "treatment_id")
-    private Treatment treatment;
+    @ManyToMany
+        @JoinTable(name = "appointments_treatments",
+            joinColumns = @JoinColumn(name = "treatments_id"),
+            inverseJoinColumns = @JoinColumn(name = "treatments_id"))
+    private List<Treatment> treatmentsList;
 
     @ManyToOne
     @JoinColumn(name = "staff_id")
@@ -53,15 +56,14 @@ public class Appointment {
 
     private double total;
 
-    public Appointment(User userFromDB, Treatment treatmentFromDB, Staff staffFromDB, String paymentMethod, LocalDateTime startDate, LocalDateTime endDate, boolean cancelled, Discount discountFromDB, double prices) {
+    public Appointment(User userFromDB, List<Treatment> treatmentsFromDB, Staff staffFromDB, String paymentMethod, LocalDateTime startDate, LocalDateTime endDate, boolean cancelled, double prices) {
     this.user = userFromDB;
-    this.treatment = treatmentFromDB;
+    this.treatmentsList = treatmentsFromDB;
     this.staff = staffFromDB;
     this.paymentMethod = paymentMethod;
     this.startTime = startDate;
     this.endTime = endDate;
     this.cancelled = cancelled;
-    this.discount = discountFromDB;
     this.total = prices;
 
     }
