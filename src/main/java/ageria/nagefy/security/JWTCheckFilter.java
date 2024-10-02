@@ -47,7 +47,6 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String accessToken = authHeader.substring(7);
         jwtTools.verifyToken(accessToken);
         String id = this.jwtTools.extractIdFromToken(accessToken);
-
         User userFromDB = this.usersService.findById(UUID.fromString(id));
         Authentication userAuth = new UsernamePasswordAuthenticationToken(userFromDB, null, userFromDB.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(userAuth);

@@ -26,11 +26,30 @@ public class AuthController {
     @Autowired
     UsersService usersService;
 
+    @Autowired
+    StaffsService staffsService;
 
+
+    @PostMapping("/staff-register")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Staff registerUser(@RequestBody @Validated StaffDTO body, BindingResult validationRes){
+        if(validationRes.hasErrors()) {
+            String msg = validationRes.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        } else {
+            return this.staffsService.saveStaff(body);
+        }
+    }
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public UserRespDTO loginUser(@RequestBody UserLoginDTO body){
         return new UserRespDTO(this.authService.checkCredentialsAndGenerateToken(body));
+    }
+
+    @PostMapping("/staff-login")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public StaffRespDTO loginUser(@RequestBody StaffLoginDTO body){
+        return new StaffRespDTO(this.authService.checkCredentialsAndGenerateTokenStaff(body));
     }
 
     @PostMapping("/register")
@@ -43,6 +62,10 @@ public class AuthController {
             return this.usersService.saveUser(body);
         }
     }
+
+
+
+
 
 
 }

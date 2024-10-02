@@ -46,6 +46,12 @@ public class ExceptionsHandler {
         return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorsDTO handleNullPointerEx(NullPointerException ex) {
+        return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
+    }
+
     @ExceptionHandler(AuthorizationDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorsDTO handleUnauthorized(AuthorizationDeniedException ex) {

@@ -39,22 +39,8 @@ public class StaffsController {
     @Autowired
     AuthService authService;
 
-    @PostMapping("/login")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public StaffRespDTO loginUser(@RequestBody StaffLoginDTO body){
-        return new StaffRespDTO(this.authService.checkCredentialsAndGenerateTokenStaff(body));
-    }
 
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Staff registerUser(@RequestBody @Validated StaffDTO body, BindingResult validationRes){
-        if(validationRes.hasErrors()) {
-            String msg = validationRes.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
-            throw new BadRequestException(msg);
-        } else {
-            return this.staffsService.saveStaff(body);
-        }
-    }
+
 
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
