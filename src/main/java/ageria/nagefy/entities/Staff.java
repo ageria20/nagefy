@@ -21,16 +21,14 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("STAFF")
+@DiscriminatorValue("Staff")
 @JsonIgnoreProperties({"password", "authorities", "enabled", "accountNonLocked", "credentialsNonExpired", "accountNonExpired", "username"})
 public class Staff extends User {
 
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
-    public Staff(String name, String surname, String telephone, String email, String password, String avatar) {
-        super(name, surname, telephone, email, password, avatar);
-        this.role = Role.EMPLOYEE;
+
+    public Staff(String name, String surname, String telephone, String email, String password, Role role, String avatar) {
+        super(name, surname, telephone, email, password, role, avatar);
     }
 }

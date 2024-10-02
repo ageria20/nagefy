@@ -3,6 +3,7 @@ package ageria.nagefy.services;
 
 import ageria.nagefy.dto.StaffLoginDTO;
 import ageria.nagefy.dto.UserLoginDTO;
+import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.UnauthorizedException;
@@ -21,6 +22,9 @@ public class AuthService {
 
     @Autowired
     StaffsService staffsService;
+
+    @Autowired
+    ClientsService clientsService;
 
 
     @Autowired
@@ -44,6 +48,16 @@ public class AuthService {
         Staff found = this.staffsService.findFromEmail(body.email());
         if(bcrypt.matches(body.password(), found.getPassword())){
             return jwtTools.createStaffToken(found);
+        }
+        else {
+            throw new UnauthorizedException("CREDENTIALS ARE NOT VALID");
+        }
+    }
+
+    public String checkCredentialsAndGenerateTokenClient(StaffLoginDTO body){
+        Client found = this.clientsService.findFromEmail(body.email());
+        if(bcrypt.matches(body.password(), found.getPassword())){
+            return jwtTools.createClientToken(found);
         }
         else {
             throw new UnauthorizedException("CREDENTIALS ARE NOT VALID");

@@ -46,13 +46,13 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Appointment> appointmentList;
 
-    public User(String name, String surname, String telephone, String email, String password, String avatar) {
+    public User(String name, String surname, String telephone, String email, String password, Role role, String avatar) {
         this.name = name;
         this.surname = surname;
         this.telephone = telephone;
         this.email = email;
         this.password = password;
-        this.role = Role.USER;
+        this.role = role;
         this.avatar = avatar;
     }
 

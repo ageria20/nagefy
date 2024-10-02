@@ -2,10 +2,12 @@ package ageria.nagefy.controllers;
 
 
 import ageria.nagefy.dto.*;
+import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.services.AuthService;
+import ageria.nagefy.services.ClientsService;
 import ageria.nagefy.services.StaffsService;
 import ageria.nagefy.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class AuthController {
     @Autowired
     StaffsService staffsService;
 
+    @Autowired
+    ClientsService clientsService;
+
 
     @PostMapping("/staff-register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,16 +45,32 @@ public class AuthController {
             return this.staffsService.saveStaff(body);
         }
     }
+    @PostMapping("/client-register")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Client registerClient(@RequestBody @Validated StaffDTO body, BindingResult validationRes){
+        if(validationRes.hasErrors()) {
+            String msg = validationRes.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        } else {
+            return this.clientsService.saveClient(body);
+        }
+    }
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public UserRespDTO loginUser(@RequestBody UserLoginDTO body){
+    public UserRespDTO loginAdmin(@RequestBody UserLoginDTO body){
         return new UserRespDTO(this.authService.checkCredentialsAndGenerateToken(body));
     }
 
     @PostMapping("/staff-login")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public StaffRespDTO loginUser(@RequestBody StaffLoginDTO body){
+    public StaffRespDTO loginStaff(@RequestBody StaffLoginDTO body){
         return new StaffRespDTO(this.authService.checkCredentialsAndGenerateTokenStaff(body));
+    }
+
+    @PostMapping("/client-login")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public StaffRespDTO loginClient(@RequestBody StaffLoginDTO body){
+        return new StaffRespDTO(this.authService.checkCredentialsAndGenerateTokenClient(body));
     }
 
     @PostMapping("/register")

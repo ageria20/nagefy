@@ -2,13 +2,11 @@ package ageria.nagefy.services;
 
 
 import ageria.nagefy.dto.StaffDTO;
-import ageria.nagefy.dto.UserDTO;
+import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
-import ageria.nagefy.entities.Treatment;
-import ageria.nagefy.entities.User;
 import ageria.nagefy.enums.Role;
 import ageria.nagefy.exceptions.NotFoundException;
-import ageria.nagefy.repositories.StaffRepository;
+import ageria.nagefy.repositories.ClientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,56 +15,57 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.Serial;
 import java.util.UUID;
 
 @Service
-public class StaffsService {
+public class ClientsService {
 
     @Autowired
-    StaffRepository staffRepository;
+    ClientsRepository clientsRepository;
+
 
     @Autowired
     PasswordEncoder bcrypt;
 
 
 
-    public Page<Staff> getAlLStaff(int pages, int size, String sortBy) {
+    public Page<Client> getAlLClients(int pages, int size, String sortBy) {
         if (pages > 50) pages = 50;
         Pageable pageable = PageRequest.of(pages, size, Sort.by(sortBy));
-        return this.staffRepository.findAll(pageable);
+        return this.clientsRepository.findAll(pageable);
     }
 
-    public Staff findFromEmail(String email){
-        return this.staffRepository.findByEmail(email);
+    public Client findFromEmail(String email){
+        return this.clientsRepository.findByEmail(email);
     }
 
-    public Staff findById(UUID id){
-        return this.staffRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
+    public Client findById(UUID id){
+        return this.clientsRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
     }
 
-    public Staff saveStaff(StaffDTO body){
-        Staff newStaff = new Staff(
+    public Client saveClient(StaffDTO body){
+        Client newClient = new Client(
                 body.name(),
                 body.surname(),
                 body.telephone(),
                 body.email(),
                 bcrypt.encode(body.password()),
-                Role.EMPLOYEE,
+                Role.USER,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
-        return this.staffRepository.save(newStaff);
+        return this.clientsRepository.save(newClient);
     }
 
-    public Staff findByIdAndUpdate(UUID id, StaffDTO body){
-        Staff found = this.findById(id);
+    public Client findByIdAndUpdate(UUID id, StaffDTO body){
+        Client found = this.findById(id);
         found.setName(body.name());
         found.setEmail(body.email());
-        return this.staffRepository.save(found);
+        return this.clientsRepository.save(found);
     }
 
-    public void deleteStaff(UUID id){
-        Staff found = this.findById(id);
-        this.staffRepository.delete(found);
+    public void deleteClient(UUID id){
+        Client found = this.findById(id);
+        this.clientsRepository.delete(found);
     }
+
 }

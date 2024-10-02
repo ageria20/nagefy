@@ -2,6 +2,7 @@ package ageria.nagefy.services;
 
 import ageria.nagefy.dto.UserDTO;
 import ageria.nagefy.entities.User;
+import ageria.nagefy.enums.Role;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.UserRepository;
@@ -49,7 +50,9 @@ public class UsersService {
                 body.telephone(),
                 body.email(),
                 bcrypt.encode(body.password()),
+                Role.ADMIN,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
+
         return this.userRepository.save(newUser);
     }
 
