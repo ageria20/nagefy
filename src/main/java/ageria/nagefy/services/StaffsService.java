@@ -4,6 +4,7 @@ package ageria.nagefy.services;
 import ageria.nagefy.dto.StaffDTO;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.Treatment;
+import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.Serial;
@@ -22,6 +24,9 @@ public class StaffsService {
     @Autowired
     StaffRepository staffRepository;
 
+    @Autowired
+    PasswordEncoder bcrypt;
+
 
 
     public Page<Staff> getAlLStaff(int pages, int size, String sortBy) {
@@ -30,6 +35,9 @@ public class StaffsService {
         return this.staffRepository.findAll(pageable);
     }
 
+    public Staff findFromEmail(String email){
+        return this.staffRepository.findByEmail(email);
+    }
 
     public Staff findById(UUID id){
         return this.staffRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
@@ -38,7 +46,8 @@ public class StaffsService {
     public Staff saveStaff(StaffDTO body){
         Staff newStaff = new Staff(
                 body.name(),
-                body.email()
+                body.email(),
+                bcrypt.encode(body.password())
         );
         return this.staffRepository.save(newStaff);
     }

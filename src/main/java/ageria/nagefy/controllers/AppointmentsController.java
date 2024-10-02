@@ -48,7 +48,7 @@ public class AppointmentsController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
     public Appointment updateAppointment(@PathVariable UUID id, @RequestBody @Validated AppointmentDTO body, BindingResult validation){
         if (validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
@@ -59,7 +59,7 @@ public class AppointmentsController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
     public void deleteAppointment(@PathVariable UUID id){
         this.appointmentsService.findByIdAndDelete(id);
     }

@@ -1,9 +1,9 @@
 package ageria.nagefy.controllers;
 
-
-import ageria.nagefy.dto.*;
+import ageria.nagefy.dto.StaffDTO;
+import ageria.nagefy.dto.StaffLoginDTO;
+import ageria.nagefy.dto.StaffRespDTO;
 import ageria.nagefy.entities.Staff;
-import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.services.AuthService;
 import ageria.nagefy.services.StaffsService;
@@ -17,32 +17,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/auth-user")
-public class AuthController {
+@RequestMapping("/auth")
+public class AuthStaffController {
 
     @Autowired
     AuthService authService;
 
+
     @Autowired
-    UsersService usersService;
+    StaffsService staffsService;
 
-
-    @PostMapping("/login")
+    @PostMapping("/staff-login")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public UserRespDTO loginUser(@RequestBody UserLoginDTO body){
-        return new UserRespDTO(this.authService.checkCredentialsAndGenerateTokenUser(body));
+    public StaffRespDTO loginUStaff(@RequestBody StaffLoginDTO body){
+        return new StaffRespDTO(this.authService.checkCredentialsAndGenerateTokenStaff(body));
     }
 
-    @PostMapping("/register")
+    @PostMapping("/staff-register")
     @ResponseStatus(HttpStatus.CREATED)
-    public User registerUser(@RequestBody @Validated UserDTO body, BindingResult validationRes){
+    public Staff registerStaff(@RequestBody @Validated StaffDTO body, BindingResult validationRes){
         if(validationRes.hasErrors()) {
             String msg = validationRes.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
         } else {
-            return this.usersService.saveUser(body);
+            return this.staffsService.saveStaff(body);
         }
     }
-
-
 }

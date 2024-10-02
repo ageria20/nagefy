@@ -2,10 +2,13 @@ package ageria.nagefy.controllers;
 
 import ageria.nagefy.dto.AppointmentDTO;
 import ageria.nagefy.dto.UserDTO;
+import ageria.nagefy.dto.UserLoginDTO;
+import ageria.nagefy.dto.UserRespDTO;
 import ageria.nagefy.entities.Appointment;
 import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.services.AppointmentsService;
+import ageria.nagefy.services.AuthService;
 import ageria.nagefy.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +35,9 @@ public class UsersController {
 
     @Autowired
     AppointmentsService appointmentsService;
+
+
+
 
 
     // 1. GET access only the ADMIN
@@ -87,6 +93,16 @@ public class UsersController {
     @GetMapping("/me/appointments")
     public List<Appointment> getUserBooking(@AuthenticationPrincipal User currentAuthenticatedUser) {
         return this.appointmentsService.getAppointments((currentAuthenticatedUser.getId()));
+    }
+
+    @PostMapping("/me")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Appointment createAppointmentUser(@AuthenticationPrincipal User currUserAuth, @RequestBody @Validated AppointmentDTO body, BindingResult validation){
+        if(validation.hasErrors()){
+            String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        }
+        return this.appointmentsService.saveAppointmentUser(currUserAuth.getId(), body);
     }
 
     @PutMapping("/me/appointments")

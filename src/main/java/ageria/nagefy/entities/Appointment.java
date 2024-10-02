@@ -30,7 +30,7 @@ public class Appointment {
     @ManyToMany
         @JoinTable(name = "appointments_treatments",
             joinColumns = @JoinColumn(name = "treatments_id"),
-            inverseJoinColumns = @JoinColumn(name = "treatments_id"))
+            inverseJoinColumns = @JoinColumn(name = "appointment_id"))
     private List<Treatment> treatmentsList;
 
     @ManyToOne

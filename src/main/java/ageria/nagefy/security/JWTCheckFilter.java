@@ -1,8 +1,10 @@
 package ageria.nagefy.security;
 
 
+import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.UnauthorizedException;
+import ageria.nagefy.services.StaffsService;
 import ageria.nagefy.services.UsersService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,6 +31,9 @@ public class JWTCheckFilter extends OncePerRequestFilter {
     @Autowired
     UsersService usersService;
 
+    @Autowired
+    StaffsService staffsService;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,8 +45,11 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         jwtTools.verifyToken(accessToken);
         String id = this.jwtTools.extractIdFromToken(accessToken);
         User userFromDB = this.usersService.findById(UUID.fromString(id));
-        Authentication auth = new UsernamePasswordAuthenticationToken(userFromDB, null, userFromDB.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        Authentication userAuth = new UsernamePasswordAuthenticationToken(userFromDB, null, userFromDB.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(userAuth);
+        Staff staffFromDB = this.staffsService.findById(UUID.fromString(id));
+        Authentication staffAuth = new UsernamePasswordAuthenticationToken(staffFromDB, null, staffFromDB.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(staffAuth);
         filterChain.doFilter(request, response);
     }
 
