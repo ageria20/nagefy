@@ -3,6 +3,7 @@ package ageria.nagefy.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,4 +26,6 @@ public class Config {
         httpSecurity.cors(Customizer.withDefaults()); // OBBLIGATORIA QUESTA IMPOSTAZIONE SE VOGLIAMO CHE PER I CORS VENGA UTILIZZATO IL BEAN SOTTOSTANTE
         return httpSecurity.build();
     }
+
+
 }

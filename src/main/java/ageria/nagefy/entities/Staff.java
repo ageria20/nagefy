@@ -21,34 +21,16 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity
+@DiscriminatorValue("STAFF")
 @JsonIgnoreProperties({"password", "authorities", "enabled", "accountNonLocked", "credentialsNonExpired", "accountNonExpired", "username"})
-public class Staff implements UserDetails {
+public class Staff extends User {
 
-    @Id
-    @GeneratedValue
-    @Setter(AccessLevel.NONE)
-    private UUID id;
-    private String name;
-    private String email;
-    private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Staff(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
+    public Staff(String name, String surname, String telephone, String email, String password, String avatar) {
+        super(name, surname, telephone, email, password, avatar);
         this.role = Role.EMPLOYEE;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.role.name()));
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
     }
 }

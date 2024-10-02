@@ -3,6 +3,7 @@ package ageria.nagefy.security;
 
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.User;
+import ageria.nagefy.enums.Role;
 import ageria.nagefy.exceptions.UnauthorizedException;
 import ageria.nagefy.services.StaffsService;
 import ageria.nagefy.services.UsersService;
@@ -21,6 +22,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.net.Authenticator;
 import java.util.UUID;
+
+import static ageria.nagefy.enums.Role.ADMIN;
 
 @Component
 public class JWTCheckFilter extends OncePerRequestFilter {
@@ -44,12 +47,11 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String accessToken = authHeader.substring(7);
         jwtTools.verifyToken(accessToken);
         String id = this.jwtTools.extractIdFromToken(accessToken);
+
         User userFromDB = this.usersService.findById(UUID.fromString(id));
         Authentication userAuth = new UsernamePasswordAuthenticationToken(userFromDB, null, userFromDB.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(userAuth);
-        Staff staffFromDB = this.staffsService.findById(UUID.fromString(id));
-        Authentication staffAuth = new UsernamePasswordAuthenticationToken(staffFromDB, null, staffFromDB.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(staffAuth);
+
         filterChain.doFilter(request, response);
     }
 

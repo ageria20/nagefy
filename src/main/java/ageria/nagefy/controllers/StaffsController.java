@@ -36,11 +36,29 @@ public class StaffsController {
     AppointmentsService appointmentsService;
 
 
+    @Autowired
+    AuthService authService;
 
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public StaffRespDTO loginUser(@RequestBody StaffLoginDTO body){
+        return new StaffRespDTO(this.authService.checkCredentialsAndGenerateTokenStaff(body));
+    }
+
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Staff registerUser(@RequestBody @Validated StaffDTO body, BindingResult validationRes){
+        if(validationRes.hasErrors()) {
+            String msg = validationRes.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        } else {
+            return this.staffsService.saveStaff(body);
+        }
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
     public Page<Staff> findAll(@RequestParam(defaultValue = "0") int pages,
                                @RequestParam(defaultValue = "10") int size,
                                @RequestParam(defaultValue = "id") String sortBy) {

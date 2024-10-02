@@ -43,7 +43,7 @@ public class UsersController {
     // 1. GET access only the ADMIN
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','EMPLOYEE')")
     public Page<User> findAll(@RequestParam(defaultValue = "0") int pages,
                               @RequestParam(defaultValue = "10") int size,
                               @RequestParam(defaultValue = "id") String sortBy) {
@@ -53,7 +53,7 @@ public class UsersController {
     // POST USER
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','EMPLOYEE')")
     public User creaUser(@RequestBody @Validated UserDTO body, BindingResult validation){
         if(validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
@@ -65,7 +65,7 @@ public class UsersController {
     // PUT USER
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','EMPLOYEE')")
     public User updateUser(@PathVariable UUID id, @RequestBody @Validated UserDTO body, BindingResult validation){
         if(validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
@@ -97,6 +97,7 @@ public class UsersController {
 
     @PostMapping("/me")
     @ResponseStatus(HttpStatus.CREATED)
+    // TODO DA MODIFICARE IN PAGE
     public Appointment createAppointmentUser(@AuthenticationPrincipal User currUserAuth, @RequestBody @Validated AppointmentDTO body, BindingResult validation){
         if(validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());

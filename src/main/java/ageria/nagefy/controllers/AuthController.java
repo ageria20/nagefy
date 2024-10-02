@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/auth-user")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class AuthController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public UserRespDTO loginUser(@RequestBody UserLoginDTO body){
-        return new UserRespDTO(this.authService.checkCredentialsAndGenerateTokenUser(body));
+        return new UserRespDTO(this.authService.checkCredentialsAndGenerateToken(body));
     }
 
     @PostMapping("/register")

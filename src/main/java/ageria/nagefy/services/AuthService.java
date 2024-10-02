@@ -8,6 +8,8 @@ import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.UnauthorizedException;
 import ageria.nagefy.security.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +22,15 @@ public class AuthService {
     @Autowired
     StaffsService staffsService;
 
+
     @Autowired
     JWTTools jwtTools;
 
     @Autowired
     PasswordEncoder bcrypt;
 
-    public String checkCredentialsAndGenerateTokenUser(UserLoginDTO body){
+
+    public String checkCredentialsAndGenerateToken(UserLoginDTO body){
         User found = this.userService.findFromEmail(body.email());
         if(bcrypt.matches(body.password(), found.getPassword())){
             return jwtTools.createUserToken(found);
@@ -45,4 +49,6 @@ public class AuthService {
             throw new UnauthorizedException("CREDENTIALS ARE NOT VALID");
         }
     }
+
+
 }

@@ -2,6 +2,7 @@ package ageria.nagefy.services;
 
 
 import ageria.nagefy.dto.StaffDTO;
+import ageria.nagefy.dto.UserDTO;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.Treatment;
 import ageria.nagefy.entities.User;
@@ -46,9 +47,11 @@ public class StaffsService {
     public Staff saveStaff(StaffDTO body){
         Staff newStaff = new Staff(
                 body.name(),
+                body.surname(),
+                body.telephone(),
                 body.email(),
-                bcrypt.encode(body.password())
-        );
+                bcrypt.encode(body.password()),
+                "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
         return this.staffRepository.save(newStaff);
     }
 

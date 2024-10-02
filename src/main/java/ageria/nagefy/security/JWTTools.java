@@ -4,6 +4,7 @@ package ageria.nagefy.security;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.UnauthorizedException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,4 +45,5 @@ public class JWTTools {
     public String extractIdFromToken(String accessToken) {
         return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build().parseSignedClaims(accessToken).getPayload().getSubject();
     }
+
 }
