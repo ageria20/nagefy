@@ -62,6 +62,12 @@ public class UsersController {
         return this.userService.saveUser(body);
     }
 
+    @GetMapping("/me")
+    @ResponseStatus(HttpStatus.OK)
+    public User getUserMe(@AuthenticationPrincipal User currAuthUser){
+        return this.userService.findById(currAuthUser.getId());
+    }
+
     // PUT USER
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
