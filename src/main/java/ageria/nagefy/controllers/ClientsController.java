@@ -2,6 +2,7 @@ package ageria.nagefy.controllers;
 
 
 import ageria.nagefy.dto.AppointmentDTO;
+import ageria.nagefy.dto.ClientDTO;
 import ageria.nagefy.dto.StaffDTO;
 import ageria.nagefy.entities.Appointment;
 import ageria.nagefy.entities.Client;
@@ -64,6 +65,17 @@ public class ClientsController {
             throw new BadRequestException(msg);
         }
         return this.clientsService.saveClient(body);
+    }
+
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
+    public Client createNewClient(@RequestBody @Validated ClientDTO body, BindingResult validation){
+        if (validation.hasErrors()){
+            String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        }
+        return this.clientsService.createNewClient(body);
     }
 
     // PUT STAFF

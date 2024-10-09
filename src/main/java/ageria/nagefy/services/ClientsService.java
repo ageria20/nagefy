@@ -1,6 +1,7 @@
 package ageria.nagefy.services;
 
 
+import ageria.nagefy.dto.ClientDTO;
 import ageria.nagefy.dto.StaffDTO;
 import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
@@ -62,6 +63,17 @@ public class ClientsService {
                 bcrypt.encode(body.password()),
                 Role.USER,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
+
+        return this.clientsRepository.save(newClient);
+    }
+
+    public Client createNewClient(ClientDTO body){
+        Client newClient = new Client(
+                body.name(),
+                body.surname(),
+                body.telephone(),
+                body.email(),
+                Role.USER);
 
         return this.clientsRepository.save(newClient);
     }

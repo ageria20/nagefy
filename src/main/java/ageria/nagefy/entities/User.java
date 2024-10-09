@@ -56,6 +56,14 @@ public class User implements UserDetails {
         this.avatar = avatar;
     }
 
+    public User(String name, String surname, String telephone, String email, Role role) {
+        this.name = name;
+        this.surname = surname;
+        this.telephone = telephone;
+        this.email = email;
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));
