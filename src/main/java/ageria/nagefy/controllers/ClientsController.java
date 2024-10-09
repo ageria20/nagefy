@@ -7,6 +7,7 @@ import ageria.nagefy.entities.Appointment;
 import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.exceptions.BadRequestException;
+import ageria.nagefy.repositories.UserRepository;
 import ageria.nagefy.services.AppointmentsService;
 import ageria.nagefy.services.ClientsService;
 import ageria.nagefy.services.StaffsService;
@@ -31,6 +32,8 @@ public class ClientsController {
     @Autowired
     ClientsService clientsService;
 
+
+
     @Autowired
     AppointmentsService appointmentsService;
 
@@ -45,9 +48,9 @@ public class ClientsController {
         return this.clientsService.getAlLClients(pages, size, sortBy);
     }
 
-    @GetMapping
+    @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public List<Client> getClientsByName(@RequestParam String name){
+    public List<Client> getClientsByName(@RequestParam(required = false)  String name){
         return this.clientsService.findFromName(name);
     }
 

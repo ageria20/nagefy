@@ -7,6 +7,7 @@ import ageria.nagefy.entities.Staff;
 import ageria.nagefy.enums.Role;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.ClientsRepository;
+import ageria.nagefy.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,9 @@ public class ClientsService {
     @Autowired
     ClientsRepository clientsRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
 
     @Autowired
     PasswordEncoder bcrypt;
@@ -40,7 +44,10 @@ public class ClientsService {
         return this.clientsRepository.findByEmail(email);
     }
 
-    public List<Client> findFromName(String name){ return this.clientsRepository.findByName(name);}
+    public List<Client> findFromName(String name){
+        return this.userRepository.findClientsByName(name);
+
+    }
 
     public Client findById(UUID id){
         return this.clientsRepository.findById(id).orElseThrow(()-> new NotFoundException(id));

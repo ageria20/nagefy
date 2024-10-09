@@ -65,4 +65,17 @@ public class User implements UserDetails {
     public String getUsername() {
         return this.email;
     }
+
+    @Override
+    public String toString() {
+        return "User: " +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", role=" + role ;
+    }
 }

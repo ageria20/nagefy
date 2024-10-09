@@ -25,4 +25,9 @@ public class Client extends User {
         super(name, surname, telephone, email, password, role, avatar);
 
     }
+
+    @Override
+    public String toString() {
+        return "Client{}";
+    }
 }
