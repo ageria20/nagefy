@@ -19,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,12 @@ public class ClientsController {
                                 @RequestParam(defaultValue = "10") int size,
                                 @RequestParam(defaultValue = "id") String sortBy) {
         return this.clientsService.getAlLClients(pages, size, sortBy);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Client> getClientsByName(@RequestParam String name){
+        return this.clientsService.findFromName(name);
     }
 
     // POST STAFF

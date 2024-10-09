@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -38,6 +39,8 @@ public class ClientsService {
     public Client findFromEmail(String email){
         return this.clientsRepository.findByEmail(email);
     }
+
+    public List<Client> findFromName(String name){ return this.clientsRepository.findByName(name);}
 
     public Client findById(UUID id){
         return this.clientsRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
