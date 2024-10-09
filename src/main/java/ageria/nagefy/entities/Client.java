@@ -26,8 +26,8 @@ public class Client extends User {
 
     }
 
-    public Client(String name, String surname, String telephone, String email, Role role) {
-        super(name, surname, telephone, email, role);
+    public Client(String name, String surname, String telephone, String email, Role role, String avatar) {
+        super(name, surname, telephone, email, role, avatar);
     }
 
     @Override

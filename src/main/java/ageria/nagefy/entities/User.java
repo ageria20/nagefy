@@ -56,12 +56,13 @@ public class User implements UserDetails {
         this.avatar = avatar;
     }
 
-    public User(String name, String surname, String telephone, String email, Role role) {
+    public User(String name, String surname, String telephone, String email, Role role, String avatar) {
         this.name = name;
         this.surname = surname;
         this.telephone = telephone;
         this.email = email;
         this.role = role;
+        this.avatar = avatar;
     }
 
     @Override

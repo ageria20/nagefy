@@ -73,7 +73,8 @@ public class ClientsService {
                 body.surname(),
                 body.telephone(),
                 body.email(),
-                Role.USER);
+                Role.USER,
+                "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
         return this.clientsRepository.save(newClient);
     }
