@@ -1,14 +1,18 @@
 package ageria.nagefy.services;
 
 
+import ageria.nagefy.dto.ClientDTO;
+import ageria.nagefy.dto.NewStaffDTO;
 import ageria.nagefy.dto.StaffDTO;
 import ageria.nagefy.dto.UserDTO;
+import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.Treatment;
 import ageria.nagefy.entities.User;
 import ageria.nagefy.enums.Role;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.StaffRepository;
+import ageria.nagefy.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.Serial;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,6 +30,9 @@ public class StaffsService {
 
     @Autowired
     StaffRepository staffRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     PasswordEncoder bcrypt;
@@ -41,6 +49,8 @@ public class StaffsService {
         return this.staffRepository.findByEmail(email);
     }
 
+    public List<Staff> findFromName(String name) { return this.userRepository.findStaffsByName(name);}
+
     public Staff findById(UUID id){
         return this.staffRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
     }
@@ -52,6 +62,17 @@ public class StaffsService {
                 body.telephone(),
                 body.email(),
                 bcrypt.encode(body.password()),
+                Role.EMPLOYEE,
+                "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
+
+        return this.staffRepository.save(newStaff);
+    }
+    public Staff createNewStaff(NewStaffDTO body){
+        Staff newStaff = new Staff(
+                body.name(),
+                body.surname(),
+                body.telephone(),
+                body.email(),
                 Role.EMPLOYEE,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 

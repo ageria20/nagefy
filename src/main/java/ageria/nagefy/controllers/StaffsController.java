@@ -2,10 +2,7 @@ package ageria.nagefy.controllers;
 
 
 import ageria.nagefy.dto.*;
-import ageria.nagefy.entities.Appointment;
-import ageria.nagefy.entities.Staff;
-import ageria.nagefy.entities.Treatment;
-import ageria.nagefy.entities.User;
+import ageria.nagefy.entities.*;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.repositories.StaffRepository;
 import ageria.nagefy.services.AppointmentsService;
@@ -46,6 +43,13 @@ public class StaffsController {
         return this.staffsService.getAlLStaff(pages, size, sortBy);
     }
 
+
+    @GetMapping("/search")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
+    public List<Staff> getStaffByName(@RequestParam String name){
+        return this.staffsService.findFromName(name);
+    }
     // POST STAFF
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -57,6 +61,17 @@ public class StaffsController {
         }
         return this.staffsService.saveStaff(body);
     }
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Staff createNewStaff(@RequestBody @Validated NewStaffDTO body, BindingResult validation){
+        if (validation.hasErrors()){
+            String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        }
+        return this.staffsService.createNewStaff(body);
+    }
+
 
     // PUT STAFF
     @PutMapping("/{id}")

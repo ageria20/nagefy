@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,13 +26,19 @@ public class TreatmentsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
     public Page<Treatment> findAll(@RequestParam(defaultValue = "0") int pages,
                                    @RequestParam(defaultValue = "10") int size,
                                    @RequestParam(defaultValue = "id") String sortBy) {
         return this.treatmentsService.getAlLTreatments(pages, size, sortBy);
     }
 
+    @GetMapping("/search")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
+    public List<Treatment> getTreatmentByName(@RequestParam String name){
+        return this.treatmentsService.findTreatmentFromName(name);
+    }
     //POST TREATMENT
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

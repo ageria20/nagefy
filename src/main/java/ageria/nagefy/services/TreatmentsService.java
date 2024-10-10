@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,6 +32,10 @@ public class TreatmentsService {
 
     public Treatment findById(UUID id){
         return this.treatmentsRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+    }
+
+    public List<Treatment> findTreatmentFromName(String name){
+        return this.treatmentsRepository.findTreatmentsByName(name);
     }
 
     public Treatment saveTreatment(TreatmentDTO body){
