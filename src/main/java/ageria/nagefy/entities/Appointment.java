@@ -37,8 +37,6 @@ public class Appointment {
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
-   @Column(name = "payment_method")
-    private String paymentMethod;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -46,25 +44,14 @@ public class Appointment {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    private boolean cancelled;
-    @Column(name = "cancelled_reason")
-    private String cancelledReason;
 
-    @ManyToOne
-    @JoinColumn(name = "discount_id")
-    private Discount discount;
 
-    private double total;
-
-    public Appointment(User userFromDB, List<Treatment> treatmentsFromDB, Staff staffFromDB, String paymentMethod, LocalDateTime startDate, LocalDateTime endDate, boolean cancelled, double prices) {
+    public Appointment(User userFromDB, List<Treatment> treatmentsFromDB, Staff staffFromDB, LocalDateTime startDate, LocalDateTime endDate) {
     this.user = userFromDB;
     this.treatmentsList = treatmentsFromDB;
     this.staff = staffFromDB;
-    this.paymentMethod = paymentMethod;
     this.startTime = startDate;
     this.endTime = endDate;
-    this.cancelled = cancelled;
-    this.total = prices;
 
     }
 }

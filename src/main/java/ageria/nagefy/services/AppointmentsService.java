@@ -72,12 +72,8 @@ public class AppointmentsService {
                 userFromDB,
                 treatmentsFromDB,
                 staffFromDB,
-                body.paymentMethod(),
                 startAppointment,
-                endAppointment,
-                body.cancelled(),
-                treatmentsFromDB.stream().mapToDouble(price -> price.getPrice()).sum()
-
+                endAppointment
         );
         return this.appointmentsRepository.save(newAppointment);
     }
@@ -96,12 +92,8 @@ public class AppointmentsService {
                 userFromDB,
                 treatmentsFromDB,
                 staffFromDB,
-                body.paymentMethod(),
                 startAppointment,
-                endAppointment,
-                body.cancelled(),
-                treatmentsFromDB.stream().mapToDouble(price -> price.getPrice()).sum()
-
+                endAppointment
         );
         return this.appointmentsRepository.save(newAppointment);
     }
