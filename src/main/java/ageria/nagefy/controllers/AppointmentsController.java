@@ -2,6 +2,7 @@ package ageria.nagefy.controllers;
 
 
 import ageria.nagefy.dto.AppointmentDTO;
+import ageria.nagefy.dto.AppointmentUpdateStaffDTO;
 import ageria.nagefy.entities.Appointment;
 import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.BadRequestException;
@@ -49,7 +50,7 @@ public class AppointmentsController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
-    public Appointment updateAppointment(@PathVariable UUID id, @RequestBody @Validated AppointmentDTO body, BindingResult validation){
+    public Appointment updateAppointment(@PathVariable UUID id, @RequestBody @Validated AppointmentUpdateStaffDTO body, BindingResult validation){
         if (validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);

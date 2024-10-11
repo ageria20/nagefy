@@ -2,6 +2,7 @@ package ageria.nagefy.services;
 
 
 import ageria.nagefy.dto.AppointmentDTO;
+import ageria.nagefy.dto.AppointmentUpdateStaffDTO;
 import ageria.nagefy.entities.*;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.exceptions.NotFoundException;
@@ -59,9 +60,8 @@ public class AppointmentsService {
         return this.appointmentsRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
     public Appointment saveAppointment( AppointmentDTO body){
-        Staff staffFromDB = this.staffsService.findById(body.staffMember().getId());
-        User userFromDB = this.usersService.findById(body.user().getId());
-        Discount discountFromDB = this.discountsService.findById(body.discount().getId());
+        Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staffMember()));
+        User userFromDB = this.usersService.findById(UUID.fromString(body.user()));
         List<Treatment> treatmentsFromDB = body.treatments().stream().map(treatment -> this.treatmentsService.findById(UUID.fromString(String.valueOf(treatment.getId())))).collect(Collectors.toList());
         LocalDateTime startAppointment = body.startDateTime();
         LocalDateTime endAppointment = startAppointment.plusMinutes(treatmentsFromDB.stream().mapToLong(duration -> duration.getDuration()).sum());
@@ -79,9 +79,8 @@ public class AppointmentsService {
     }
 
     public Appointment saveAppointmentUser(UUID userId, AppointmentDTO body){
-        Staff staffFromDB = this.staffsService.findById(body.staffMember().getId());
-        User userFromDB = this.usersService.findById(userId);
-        Discount discountFromDB = this.discountsService.findById(body.discount().getId());
+        Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staffMember()));
+        User userFromDB = this.usersService.findById(UUID.fromString(body.user()));
         List<Treatment> treatmentsFromDB = body.treatments().stream().map(treatment -> this.treatmentsService.findById(UUID.fromString(String.valueOf(treatment.getId())))).collect(Collectors.toList());
         LocalDateTime startAppointment = body.startDateTime();
         LocalDateTime endAppointment = startAppointment.plusMinutes(treatmentsFromDB.stream().mapToLong(duration -> duration.getDuration()).sum());
@@ -98,9 +97,8 @@ public class AppointmentsService {
         return this.appointmentsRepository.save(newAppointment);
     }
     public Appointment saveAppointmentStaff(UUID staffId, AppointmentDTO body){
-        Staff staffFromDB = this.staffsService.findById(staffId);
-        User userFromDB = this.usersService.findById(body.user().getId());
-        Discount discountFromDB = this.discountsService.findById(body.discount().getId());
+        Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staffMember()));
+        User userFromDB = this.usersService.findById(UUID.fromString(body.user()));
         List<Treatment> treatmentsFromDB = body.treatments().stream().map(treatment -> this.treatmentsService.findById(UUID.fromString(String.valueOf(treatment.getId())))).collect(Collectors.toList());
         LocalDateTime startAppointment = body.startDateTime();
         LocalDateTime endAppointment = startAppointment.plusMinutes(treatmentsFromDB.stream().mapToLong(duration -> duration.getDuration()).sum());
@@ -111,27 +109,20 @@ public class AppointmentsService {
                 userFromDB,
                 treatmentsFromDB,
                 staffFromDB,
-                body.paymentMethod(),
                 startAppointment,
-                endAppointment,
-                body.cancelled(),
-                treatmentsFromDB.stream().mapToDouble(price -> price.getPrice()).sum()
-
+                endAppointment
         );
         return this.appointmentsRepository.save(newAppointment);
     }
 
-    public Appointment findByIdAndUpdate(UUID id, AppointmentDTO body){
+    public Appointment findByIdAndUpdate(UUID id, AppointmentUpdateStaffDTO body){
         Appointment appointmentFromDB = this.findById(id);
         LocalDateTime startAppointment = body.startDateTime();
         LocalDateTime endAppointment = startAppointment.plusMinutes(body.treatments().stream().mapToLong(duration -> duration.getDuration()).sum());
-        appointmentFromDB.setUser(body.user());
         appointmentFromDB.setTreatmentsList(body.treatments());
         appointmentFromDB.setStaff(body.staffMember());
-        appointmentFromDB.setPaymentMethod(body.paymentMethod());
         appointmentFromDB.setStartTime(startAppointment);
         appointmentFromDB.setEndTime(endAppointment);
-        appointmentFromDB.setTotal(body.treatments().stream().mapToDouble(price -> price.getPrice()).sum());
         return this.appointmentsRepository.save(appointmentFromDB);
     }
 
