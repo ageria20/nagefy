@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 
 @RestControllerAdvice
 public class ExceptionsHandler {
@@ -23,6 +24,11 @@ public class ExceptionsHandler {
         return new ErrorsDTO("Server error", LocalDateTime.now());
     }
 
+    @ExceptionHandler(DateTimeParseException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorsDTO handleDateTime(DateTimeParseException ex) {
+        return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
+    }
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorsDTO handleBadRequest(MaxUploadSizeExceededException ex) {

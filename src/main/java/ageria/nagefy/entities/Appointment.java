@@ -27,7 +27,7 @@ public class Appointment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "appointments_treatments",
             joinColumns = @JoinColumn(name = "treatments_id"),
             inverseJoinColumns = @JoinColumn(name = "appointment_id"))
