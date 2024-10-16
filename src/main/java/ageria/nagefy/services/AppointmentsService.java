@@ -60,12 +60,12 @@ public class AppointmentsService {
         return this.appointmentsRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
     public Appointment saveAppointment( AppointmentDTO body){
-        Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staffMember()));
+        Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staff()));
         User userFromDB = this.usersService.findById(UUID.fromString(body.user()));
         List<Treatment> treatmentsFromDB = body.treatments().stream().map(treatment -> this.treatmentsService.findById(UUID.fromString(String.valueOf(treatment.getId())))).collect(Collectors.toList());
-        LocalDateTime startAppointment = body.startDateTime();
+        LocalDateTime startAppointment = body.startTime();
         LocalDateTime endAppointment = startAppointment.plusMinutes(treatmentsFromDB.stream().mapToLong(duration -> duration.getDuration()).sum());
-        if(this.appointmentsRepository.existsByStaffAndStartTime(staffFromDB, LocalDateTime.from(body.startDateTime()))){
+        if(this.appointmentsRepository.existsByStaffAndStartTime(staffFromDB, LocalDateTime.from(body.startTime()))){
             throw new BadRequestException("STAFF MEMBER ALREADY OCCUPIED");
         }
         Appointment newAppointment = new Appointment(
@@ -79,12 +79,12 @@ public class AppointmentsService {
     }
 
     public Appointment saveAppointmentUser(UUID userId, AppointmentDTO body){
-        Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staffMember()));
+        Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staff()));
         User userFromDB = this.usersService.findById(UUID.fromString(body.user()));
         List<Treatment> treatmentsFromDB = body.treatments().stream().map(treatment -> this.treatmentsService.findById(UUID.fromString(String.valueOf(treatment.getId())))).collect(Collectors.toList());
-        LocalDateTime startAppointment = body.startDateTime();
+        LocalDateTime startAppointment = body.startTime();
         LocalDateTime endAppointment = startAppointment.plusMinutes(treatmentsFromDB.stream().mapToLong(duration -> duration.getDuration()).sum());
-        if(this.appointmentsRepository.existsByStaffAndStartTime(staffFromDB, LocalDateTime.from(body.startDateTime()))){
+        if(this.appointmentsRepository.existsByStaffAndStartTime(staffFromDB, LocalDateTime.from(body.startTime()))){
             throw new BadRequestException("STAFF MEMBER ALREADY OCCUPIED");
         }
         Appointment newAppointment = new Appointment(
@@ -97,12 +97,12 @@ public class AppointmentsService {
         return this.appointmentsRepository.save(newAppointment);
     }
     public Appointment saveAppointmentStaff(UUID staffId, AppointmentDTO body){
-        Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staffMember()));
+        Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staff()));
         User userFromDB = this.usersService.findById(UUID.fromString(body.user()));
         List<Treatment> treatmentsFromDB = body.treatments().stream().map(treatment -> this.treatmentsService.findById(UUID.fromString(String.valueOf(treatment.getId())))).collect(Collectors.toList());
-        LocalDateTime startAppointment = body.startDateTime();
+        LocalDateTime startAppointment = body.startTime();
         LocalDateTime endAppointment = startAppointment.plusMinutes(treatmentsFromDB.stream().mapToLong(duration -> duration.getDuration()).sum());
-        if(this.appointmentsRepository.existsByStaffAndStartTime(staffFromDB, LocalDateTime.from(body.startDateTime()))){
+        if(this.appointmentsRepository.existsByStaffAndStartTime(staffFromDB, LocalDateTime.from(body.startTime()))){
             throw new BadRequestException("STAFF MEMBER ALREADY OCCUPIED");
         }
         Appointment newAppointment = new Appointment(
@@ -117,10 +117,11 @@ public class AppointmentsService {
 
     public Appointment findByIdAndUpdate(UUID id, AppointmentUpdateStaffDTO body){
         Appointment appointmentFromDB = this.findById(id);
-        LocalDateTime startAppointment = body.startDateTime();
+        Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staff()));
+        LocalDateTime startAppointment = body.startTime();
         LocalDateTime endAppointment = startAppointment.plusMinutes(body.treatments().stream().mapToLong(duration -> duration.getDuration()).sum());
         appointmentFromDB.setTreatmentsList(body.treatments());
-        appointmentFromDB.setStaff(body.staffMember());
+        appointmentFromDB.setStaff(staffFromDB);
         appointmentFromDB.setStartTime(startAppointment);
         appointmentFromDB.setEndTime(endAppointment);
         return this.appointmentsRepository.save(appointmentFromDB);

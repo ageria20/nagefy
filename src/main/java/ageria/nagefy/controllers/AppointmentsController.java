@@ -28,12 +28,19 @@ public class AppointmentsController {
 
     // 1. GET access only the ADMIN
     @GetMapping
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Appointment> findAll(@RequestParam(defaultValue = "0") int pages,
                                      @RequestParam(defaultValue = "10") int size,
                                      @RequestParam(defaultValue = "id") String sortBy) {
         return this.appointmentsService.getAllAppointments(pages, size, sortBy);
+    }
+
+    @GetMapping("/{appointmentId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
+    public Appointment getFromId(@PathVariable UUID appointmentId){
+        return this.appointmentsService.findById(appointmentId);
     }
 
     @PostMapping
