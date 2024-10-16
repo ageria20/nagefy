@@ -1,6 +1,7 @@
 package ageria.nagefy.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -43,6 +44,10 @@ public class Appointment {
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
+
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Cash cash;
 
 
 

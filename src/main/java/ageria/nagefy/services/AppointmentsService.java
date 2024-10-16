@@ -59,6 +59,7 @@ public class AppointmentsService {
     public Appointment findById(UUID id){
         return this.appointmentsRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
+
     public Appointment saveAppointment( AppointmentDTO body){
         Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staff()));
         User userFromDB = this.usersService.findById(UUID.fromString(body.user()));
