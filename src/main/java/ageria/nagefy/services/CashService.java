@@ -43,12 +43,12 @@ public class CashService {
 
     public Cash createCash(CashDTO body){
         Appointment appointmentFromDB = this.appointmentsService.findById(UUID.fromString(body.appointment()));
-        double totalAppointment = appointmentFromDB.getTreatmentsList().stream().mapToDouble(treatment -> treatment.getPrice()).sum();
+
 
         Cash newCash = new Cash(
                 appointmentFromDB,
                 body.paymentMethod(),
-                totalAppointment
+                body.total()
         );
 
         return this.cashRepository.save(newCash);

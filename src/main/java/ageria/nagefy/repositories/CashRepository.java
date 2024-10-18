@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface CashRepository extends JpaRepository<Cash, UUID> {
 
     List<Cash> findByPaymentMethod(String paymentMethod);
+
+
 }

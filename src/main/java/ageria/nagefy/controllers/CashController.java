@@ -30,11 +30,10 @@ public class CashController {
                               @RequestParam(defaultValue = "id") String sortBy) {
         return this.cashService.getAllCashes(pages, size, sortBy);
     }
-/*
-    @GetMapping("/${appointmentId}")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
-    public Cash */
+
+
+
+
     // POST CREATING CASH
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
