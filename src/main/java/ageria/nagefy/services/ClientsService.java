@@ -112,7 +112,6 @@ public class ClientsService {
 
         // Aggiorno la password del cliente
         client.setPassword(bcrypt.encode(newPassword));
-        client.setResetPasswordToken(null); // Rimuovo il token dopo averlo usato
 
 
         return this.clientsRepository.save(client);
