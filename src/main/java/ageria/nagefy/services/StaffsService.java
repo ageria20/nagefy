@@ -13,6 +13,7 @@ import ageria.nagefy.enums.Role;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.StaffRepository;
 import ageria.nagefy.repositories.UserRepository;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +36,9 @@ public class StaffsService {
     UserRepository userRepository;
 
     @Autowired
+    EmailService emailService;
+
+    @Autowired
     PasswordEncoder bcrypt;
 
 
@@ -46,7 +50,7 @@ public class StaffsService {
     }
 
     public Staff findFromEmail(String email){
-        return this.staffRepository.findByEmail(email);
+        return this.staffRepository.findByEmail(email.toLowerCase());
     }
 
     public List<Staff> findFromName(String name) { return this.userRepository.findStaffsByName(name);}
@@ -67,7 +71,7 @@ public class StaffsService {
 
         return this.staffRepository.save(newStaff);
     }
-    public Staff createNewStaff(NewStaffDTO body){
+    public Staff createNewStaff(NewStaffDTO body) throws MessagingException {
         Staff newStaff = new Staff(
                 body.name(),
                 body.surname(),
@@ -76,7 +80,11 @@ public class StaffsService {
                 Role.EMPLOYEE,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
-        return this.staffRepository.save(newStaff);
+        String token = UUID.randomUUID().toString();
+        newStaff.setPassword(token);
+        Staff savedStaff = this.staffRepository.save(newStaff);
+        this.emailService.sendEmail(savedStaff.getEmail());
+        return savedStaff;
     }
 
     public Staff findByIdAndUpdate(UUID id, StaffDTO body){
@@ -84,6 +92,19 @@ public class StaffsService {
         found.setName(body.name());
         found.setEmail(body.email());
         return this.staffRepository.save(found);
+    }
+
+    public Staff findByEmailAndResetPassword(String email, String newPassword){
+        Staff staff = this.findFromEmail(email);
+        if (staff == null) {
+            throw new NotFoundException("Email non trovata");
+        }
+
+        // Aggiorno la password del cliente
+        staff.setPassword(bcrypt.encode(newPassword));
+
+
+        return this.staffRepository.save(staff);
     }
 
     public void deleteStaff(UUID id){

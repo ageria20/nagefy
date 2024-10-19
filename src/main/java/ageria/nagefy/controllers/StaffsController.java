@@ -9,6 +9,7 @@ import ageria.nagefy.services.AppointmentsService;
 import ageria.nagefy.services.AuthService;
 import ageria.nagefy.services.StaffsService;
 import ageria.nagefy.services.UsersService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -64,7 +65,7 @@ public class StaffsController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Staff createNewStaff(@RequestBody @Validated NewStaffDTO body, BindingResult validation){
+    public Staff createNewStaff(@RequestBody @Validated NewStaffDTO body, BindingResult validation) throws MessagingException {
         if (validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
@@ -72,6 +73,11 @@ public class StaffsController {
         return this.staffsService.createNewStaff(body);
     }
 
+    @PutMapping("/reset")
+    public Staff resetPassword(@RequestParam("email") String email, @RequestBody String newPassword) {
+        return this.staffsService.findByEmailAndResetPassword(email, newPassword);
+
+    }
 
     // PUT STAFF
     @PutMapping("/{id}")
