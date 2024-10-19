@@ -18,7 +18,7 @@ public class EmailService {
     JavaMailSenderImpl javaMailSender;
 
 
-    public void sendEmail(String toMail, String resetToken) throws MessagingException {
+    public void sendEmail(String toMail) throws MessagingException {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -30,7 +30,7 @@ public class EmailService {
         helper.setSubject("Password Reset");
 
 
-        String resetLink = "http://localhost:5173/clients/create?email=" + resetToken;
+        String resetLink = "http://localhost:5173/reset-password/" + toMail;
 
 
         String htmlBody = "<!DOCTYPE html>" +

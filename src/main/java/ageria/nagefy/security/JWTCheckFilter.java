@@ -21,6 +21,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.net.Authenticator;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import static ageria.nagefy.enums.Role.ADMIN;
@@ -56,7 +58,10 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
     @Override
     public boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return new AntPathMatcher().match("/auth/**", request.getServletPath());
+        String path = request.getServletPath();
+        List<String> patternList = Arrays.asList("/auth/**", "/clients/reset");
+        AntPathMatcher newAntPath = new AntPathMatcher();
+        return patternList.stream().anyMatch(pattern -> newAntPath.match(pattern, path));
     }
 
 }

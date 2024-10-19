@@ -91,9 +91,9 @@ public class ClientsService {
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
         String token = UUID.randomUUID().toString();
-        newClient.setResetPasswordToken(token);
+        newClient.setPassword(token);
         Client savedClient = this.clientsRepository.save(newClient);
-        this.emailSrvice.sendEmail(savedClient.getEmail(), token);
+        this.emailSrvice.sendEmail(savedClient.getEmail());
         return savedClient;
     }
 
