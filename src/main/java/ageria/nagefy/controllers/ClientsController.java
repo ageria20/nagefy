@@ -79,6 +79,12 @@ public class ClientsController {
         return this.clientsService.createNewClientWithPassword(body);
     }
 
+    @PostMapping("/reset")
+    public Client resetPassword(@RequestParam("email") String email, @RequestParam("password") String newPassword) {
+        return  this.clientsService.findByEmailAndResetPassword(email, newPassword);
+
+    }
+
 
 
     // PUT STAFF

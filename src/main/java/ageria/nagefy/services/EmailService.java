@@ -1,6 +1,7 @@
 package ageria.nagefy.services;
 
 
+import ageria.nagefy.exceptions.BadRequestException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +17,22 @@ public class EmailService {
     @Autowired
     JavaMailSenderImpl javaMailSender;
 
-    @Value("${app.mail.recipient}")
-    private String recipientEmail;
 
     public void sendEmail(String toMail, String resetToken) throws MessagingException {
-        // Crea il MimeMessage
+
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        if(toMail == null || !toMail.contains("@")){
+            throw new BadRequestException("Indirizzo Email non valido");
+        }
 
-        // Imposta il destinatario e l'oggetto della mail
         helper.setTo(toMail);
         helper.setSubject("Password Reset");
 
-        // Genera il link per il reset della password
-        String resetLink = "http://http://localhost:5173/reset-password?token=" + resetToken;
 
-        // Corpo del messaggio HTML con bottone per il reset
+        String resetLink = "http://localhost:5173/clients/create?email=" + resetToken;
+
+
         String htmlBody = "<!DOCTYPE html>" +
                 "<html>" +
                 "<head>" +
@@ -49,7 +50,7 @@ public class EmailService {
                 "    <h2>Password Reset</h2>" +
                 "  </div>" +
                 "  <div class='content'>" +
-                "    <p>Hello,</p>" +
+                "    <p>Ciao,</p>" +
                 "    <p>Clicca il pulsante qui sotto per resettare la tua password:</p>" +
                 "    <a href='" + resetLink + "' class='btn'>Reset Password</a>" +
                 "  </div>" +
@@ -60,10 +61,8 @@ public class EmailService {
                 "</body>" +
                 "</html>";
 
-        // Imposta il contenuto HTML dell'email
-        helper.setText(htmlBody, true);
 
-        // Invia la mail
+        helper.setText(htmlBody, true);
         javaMailSender.send(mimeMessage);
     }
 }

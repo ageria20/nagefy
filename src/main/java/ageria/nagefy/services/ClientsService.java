@@ -104,19 +104,21 @@ public class ClientsService {
         return this.clientsRepository.save(found);
     }
 
-    public Client findByEmailAndUpdatePassword(String email, StaffDTO body){
-        Client found = this.findFromEmail(email);
-        if(found == null){
+    public Client findByEmailAndResetPassword(String email, String newPassword){
+        Client client = clientsRepository.findByEmail(email);
+        if (client == null) {
             throw new NotFoundException("Email non valida");
         }
-        found.setName(body.name());
-        found.setSurname(body.surname());
-        found.setTelephone(body.telephone());
-        found.setEmail(body.email());
-        found.setPassword(bcrypt.encode(body.password()));
-        found.setResetPasswordToken(null);
-        return this.clientsRepository.save(found);
+
+        // Aggiorno la password del cliente
+        client.setPassword(bcrypt.encode(newPassword));
+        client.setResetPasswordToken(null); // Rimuovo il token dopo averlo usato
+
+
+        return this.clientsRepository.save(client);
     }
+
+
 
     public void deleteClient(UUID id){
         Client found = this.findById(id);
