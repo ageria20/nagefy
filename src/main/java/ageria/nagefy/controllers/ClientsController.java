@@ -12,6 +12,7 @@ import ageria.nagefy.repositories.UserRepository;
 import ageria.nagefy.services.AppointmentsService;
 import ageria.nagefy.services.ClientsService;
 import ageria.nagefy.services.StaffsService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -70,13 +71,15 @@ public class ClientsController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
-    public Client createNewClient(@RequestBody @Validated ClientDTO body, BindingResult validation){
+    public Client createNewClient(@RequestBody @Validated ClientDTO body, BindingResult validation) throws MessagingException {
         if (validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
         }
-        return this.clientsService.createNewClient(body);
+        return this.clientsService.createNewClientWithPassword(body);
     }
+
+
 
     // PUT STAFF
     @PutMapping("/{id}")

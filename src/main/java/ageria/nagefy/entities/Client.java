@@ -1,6 +1,7 @@
 package ageria.nagefy.entities;
 
 import ageria.nagefy.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -18,7 +19,8 @@ import lombok.Setter;
 @JsonIgnoreProperties({"password", "authorities", "enabled", "accountNonLocked", "credentialsNonExpired", "accountNonExpired", "username"})
 public class Client extends User {
 
-
+    @JsonIgnore
+    private String resetPasswordToken;
 
 
     public Client(String name, String surname, String telephone, String email, String password, Role role, String avatar) {
