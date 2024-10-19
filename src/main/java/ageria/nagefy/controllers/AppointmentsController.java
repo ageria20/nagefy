@@ -31,7 +31,7 @@ public class AppointmentsController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Appointment> findAll(@RequestParam(defaultValue = "0") int pages,
-                                     @RequestParam(defaultValue = "10") int size,
+                                     @RequestParam(defaultValue = "1000") int size,
                                      @RequestParam(defaultValue = "id") String sortBy) {
         return this.appointmentsService.getAllAppointments(pages, size, sortBy);
     }
