@@ -93,7 +93,7 @@ public class ClientsService {
         String token = UUID.randomUUID().toString();
         newClient.setPassword(token);
         Client savedClient = this.clientsRepository.save(newClient);
-        this.emailSrvice.sendEmail(savedClient.getEmail());
+        this.emailSrvice.sendEmailClient(savedClient.getEmail());
         return savedClient;
     }
 

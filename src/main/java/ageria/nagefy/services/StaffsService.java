@@ -83,7 +83,7 @@ public class StaffsService {
         String token = UUID.randomUUID().toString();
         newStaff.setPassword(token);
         Staff savedStaff = this.staffRepository.save(newStaff);
-        this.emailService.sendEmail(savedStaff.getEmail());
+        this.emailService.sendEmailStaff(savedStaff.getEmail());
         return savedStaff;
     }
 

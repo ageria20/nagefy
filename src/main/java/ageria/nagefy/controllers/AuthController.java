@@ -61,17 +61,17 @@ public class AuthController {
         return new UserRespDTO(this.authService.checkCredentialsAndGenerateToken(body));
     }
 
-    /*@PostMapping("/staff-login")
+    @PostMapping("/staff-login")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public StaffRespDTO loginStaff(@RequestBody StaffLoginDTO body){
         return new StaffRespDTO(this.authService.checkCredentialsAndGenerateTokenStaff(body));
-    }*/
+    }
 
-    /*@PostMapping("/client-login")
+    @PostMapping("/client-login")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public StaffRespDTO loginClient(@RequestBody StaffLoginDTO body){
         return new StaffRespDTO(this.authService.checkCredentialsAndGenerateTokenClient(body));
-    }*/
+    }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
