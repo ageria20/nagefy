@@ -1,10 +1,13 @@
 package ageria.nagefy.security;
 
 
+import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.User;
 import ageria.nagefy.enums.Role;
+import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.exceptions.UnauthorizedException;
+import ageria.nagefy.services.ClientsService;
 import ageria.nagefy.services.StaffsService;
 import ageria.nagefy.services.UsersService;
 import jakarta.servlet.FilterChain;
@@ -37,6 +40,9 @@ public class JWTCheckFilter extends OncePerRequestFilter {
     UsersService usersService;
 
     @Autowired
+    ClientsService clientsService;
+
+    @Autowired
     StaffsService staffsService;
 
 
@@ -49,9 +55,32 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String accessToken = authHeader.substring(7);
         jwtTools.verifyToken(accessToken);
         String id = this.jwtTools.extractIdFromToken(accessToken);
-        User userFromDB = this.usersService.findById(UUID.fromString(id));
-        Authentication userAuth = new UsernamePasswordAuthenticationToken(userFromDB, null, userFromDB.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(userAuth);
+        String role = this.jwtTools.extractRoleFromToken(accessToken);
+        System.out.printf("ROLE: " + role);
+        if (role.equals("USER")) {
+            Client clientFromDB = this.clientsService.findById(UUID.fromString(id));
+            if(clientFromDB == null){
+                throw new NotFoundException("CLIENT NOT FOUND");
+            }
+            Authentication userAuth = new UsernamePasswordAuthenticationToken(clientFromDB, null, clientFromDB.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(userAuth);
+        } else if (role.equals("EMPLOYEE")) {
+            Staff staffFromDB = this.staffsService.findById(UUID.fromString(id));
+            if(staffFromDB == null){
+                throw new NotFoundException("STAFF NOT FOUND");
+            }
+            Authentication staffAuth = new UsernamePasswordAuthenticationToken(staffFromDB, null, staffFromDB.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(staffAuth);
+        } else if (role.equals("ADMIN")) {
+            User adminFromDB = this.usersService.findById(UUID.fromString(id));
+            if(adminFromDB == null){
+                throw new NotFoundException("USER NOT FOUND");
+            }
+            Authentication adminAuth = new UsernamePasswordAuthenticationToken(adminFromDB, null, adminFromDB.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(adminAuth);
+        } else {
+            throw new UnauthorizedException("Ruolo non autorizzato");
+        }
 
         filterChain.doFilter(request, response);
     }

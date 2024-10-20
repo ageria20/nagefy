@@ -91,7 +91,7 @@ public class ClientsService {
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
         String token = UUID.randomUUID().toString();
-        newClient.setPassword(token);
+        newClient.setPassword(bcrypt.encode(token));
         Client savedClient = this.clientsRepository.save(newClient);
         this.emailSrvice.sendEmailClient(savedClient.getEmail());
         return savedClient;

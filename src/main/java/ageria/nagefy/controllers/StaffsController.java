@@ -20,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -74,9 +75,11 @@ public class StaffsController {
     }
 
     @PutMapping("/reset")
-    public Staff resetPassword(@RequestParam("email") String email, @RequestBody String newPassword) {
+    public Staff resetPassword(@RequestParam("email") String email, @RequestBody ChangePasswordDTO newPassword) {
+        // Estrai la nuova password dal corpo della richiesta
+       /* String newPassword = requestBody.get("password");*/
+        // Chiama il servizio per aggiornare la password
         return this.staffsService.findByEmailAndResetPassword(email, newPassword);
-
     }
 
     // PUT STAFF

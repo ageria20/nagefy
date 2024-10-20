@@ -29,7 +29,7 @@ public class AppointmentsController {
     // 1. GET access only the ADMIN
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
     public Page<Appointment> findAll(@RequestParam(defaultValue = "0") int pages,
                                      @RequestParam(defaultValue = "1000") int size,
                                      @RequestParam(defaultValue = "id") String sortBy) {

@@ -1,10 +1,7 @@
 package ageria.nagefy.services;
 
 
-import ageria.nagefy.dto.ClientDTO;
-import ageria.nagefy.dto.NewStaffDTO;
-import ageria.nagefy.dto.StaffDTO;
-import ageria.nagefy.dto.UserDTO;
+import ageria.nagefy.dto.*;
 import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.Treatment;
@@ -72,16 +69,16 @@ public class StaffsService {
         return this.staffRepository.save(newStaff);
     }
     public Staff createNewStaff(NewStaffDTO body) throws MessagingException {
+        String token = UUID.randomUUID().toString();
         Staff newStaff = new Staff(
                 body.name(),
                 body.surname(),
                 body.telephone(),
                 body.email(),
+                bcrypt.encode(token),
                 Role.EMPLOYEE,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
-        String token = UUID.randomUUID().toString();
-        newStaff.setPassword(token);
         Staff savedStaff = this.staffRepository.save(newStaff);
         this.emailService.sendEmailStaff(savedStaff.getEmail());
         return savedStaff;
@@ -94,17 +91,17 @@ public class StaffsService {
         return this.staffRepository.save(found);
     }
 
-    public Staff findByEmailAndResetPassword(String email, String newPassword){
+    public Staff findByEmailAndResetPassword(String email, ChangePasswordDTO newPassword){
         Staff staff = this.findFromEmail(email);
         if (staff == null) {
             throw new NotFoundException("Email non trovata");
         }
+        System.out.println("NEW PASSWORD: " + newPassword.confirmedPassword());
+        staff.setPassword(bcrypt.encode(newPassword.confirmedPassword()));
+        Staff updatedStaff = this.staffRepository.save(staff);
+        System.out.println("UPDATED PASSWORD: " + updatedStaff.getPassword());
 
-        // Aggiorno la password del cliente
-        staff.setPassword(bcrypt.encode(newPassword));
-
-
-        return this.staffRepository.save(staff);
+        return updatedStaff;
     }
 
     public void deleteStaff(UUID id){

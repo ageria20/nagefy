@@ -36,6 +36,8 @@ public class AuthService {
 
     public String checkCredentialsAndGenerateToken(UserLoginDTO body){
         User found = this.userService.findFromEmail(body.email());
+        System.out.println("BODY PSW: " + body.password());
+        System.out.println("HASED PSW USER: "+ found.getPassword());
         if(bcrypt.matches(body.password(), found.getPassword())){
             return jwtTools.createUserToken(found);
         }
@@ -44,8 +46,16 @@ public class AuthService {
         }
     }
 
-    public String checkCredentialsAndGenerateTokenStaff(StaffLoginDTO body){
+    public String checkCredentialsAndGenerateTokenStaff(UserLoginDTO body){
         Staff found = this.staffsService.findFromEmail(body.email());
+        System.out.println("STAFF: "+ found);
+        System.out.println("HASED PSW: " + found.getPassword());
+        System.out.println("BODY PSW: " + body.password());
+        boolean passwordMatches = bcrypt.matches(body.password(), found.getPassword());
+        System.out.println("Password matches: " + passwordMatches);
+
+        //VECCHIA PASSWORD(1234): $2a$11$iWx/swa02iTUI/PSDCIJpO6fQJUflsgr.bLyCQueU90GbXN3G4iF
+        // NUOVA PASSWORD(12345): $2a$11$B3HcDMHj4J46qJyUf8NdyuRHiuKJ0MUj7gipA74yJcZCgKC1kMINy
         if(bcrypt.matches(body.password(), found.getPassword())){
             return jwtTools.createStaffToken(found);
         }
@@ -54,8 +64,11 @@ public class AuthService {
         }
     }
 
-    public String checkCredentialsAndGenerateTokenClient(StaffLoginDTO body){
+    public String checkCredentialsAndGenerateTokenClient(UserLoginDTO body){
         Client found = this.clientsService.findFromEmail(body.email());
+        System.out.println("CLIENT: "+ found);
+        System.out.println("Provided password: " + body.password()); // Password fornita
+        System.out.println("Stored password: " + found.getPassword());
         if(bcrypt.matches(body.password(), found.getPassword())){
             return jwtTools.createClientToken(found);
         }
