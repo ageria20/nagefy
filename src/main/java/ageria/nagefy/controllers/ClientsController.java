@@ -2,6 +2,7 @@ package ageria.nagefy.controllers;
 
 
 import ageria.nagefy.dto.AppointmentDTO;
+import ageria.nagefy.dto.ChangePasswordDTO;
 import ageria.nagefy.dto.ClientDTO;
 import ageria.nagefy.dto.StaffDTO;
 import ageria.nagefy.entities.Appointment;
@@ -80,9 +81,8 @@ public class ClientsController {
     }
 
     @PutMapping("/reset")
-    public Client resetPassword(@RequestParam("email") String email, @RequestBody String newPassword) {
-        return  this.clientsService.findByEmailAndResetPassword(email, newPassword);
-
+    public Client resetPassword(@RequestParam("email") String email, @RequestBody ChangePasswordDTO newPassword) {
+        return this.clientsService.findByEmailAndResetPassword(email, newPassword);
     }
 
 

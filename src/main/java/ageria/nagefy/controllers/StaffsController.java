@@ -76,9 +76,7 @@ public class StaffsController {
 
     @PutMapping("/reset")
     public Staff resetPassword(@RequestParam("email") String email, @RequestBody ChangePasswordDTO newPassword) {
-        // Estrai la nuova password dal corpo della richiesta
-       /* String newPassword = requestBody.get("password");*/
-        // Chiama il servizio per aggiornare la password
+
         return this.staffsService.findByEmailAndResetPassword(email, newPassword);
     }
 

@@ -1,9 +1,11 @@
 package ageria.nagefy.services;
 
 
+import ageria.nagefy.dto.ChangePasswordDTO;
 import ageria.nagefy.dto.ClientDTO;
 import ageria.nagefy.dto.StaffDTO;
 import ageria.nagefy.entities.Client;
+import ageria.nagefy.entities.Staff;
 import ageria.nagefy.enums.Role;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.ClientsRepository;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.UUID;
@@ -82,16 +85,16 @@ public class ClientsService {
         return this.clientsRepository.save(newClient);
     }
     public Client createNewClientWithPassword(ClientDTO body) throws MessagingException {
+        String token = UUID.randomUUID().toString();
         Client newClient = new Client(
                 body.name(),
                 body.surname(),
                 body.telephone(),
                 body.email(),
+                bcrypt.encode(token),
                 Role.USER,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
-        String token = UUID.randomUUID().toString();
-        newClient.setPassword(bcrypt.encode(token));
         Client savedClient = this.clientsRepository.save(newClient);
         this.emailSrvice.sendEmailClient(savedClient.getEmail());
         return savedClient;
@@ -104,17 +107,17 @@ public class ClientsService {
         return this.clientsRepository.save(found);
     }
 
-    public Client findByEmailAndResetPassword(String email, String newPassword){
-        Client client = clientsRepository.findByEmail(email);
+    public Client findByEmailAndResetPassword(String email, ChangePasswordDTO newPassword){
+        Client client = this.findFromEmail(email);
         if (client == null) {
-            throw new NotFoundException("Email non valida");
+            throw new NotFoundException("Email non trovata");
         }
+        System.out.println("NEW PASSWORD: " + newPassword.password());
+        client.setPassword(bcrypt.encode(newPassword.password()));
+        Client updatedClient = this.clientsRepository.save(client);
+        System.out.println("UPDATED PASSWORD: " + updatedClient.getPassword());
 
-        // Aggiorno la password del cliente
-        client.setPassword(bcrypt.encode(newPassword));
-
-
-        return this.clientsRepository.save(client);
+        return updatedClient;
     }
 
 
