@@ -18,7 +18,7 @@ public interface AppointmentsRepository extends JpaRepository<Appointment, UUID>
     List<Appointment> findByUserId(UUID id);
 
     Page<Appointment> findByStaffId(Pageable pageable, UUID id);
-    Page<Appointment> findByClientId(Pageable pageable, UUID id);
+    Page<Appointment> findByUserId(Pageable pageable, UUID id);
 
 
 }

@@ -118,7 +118,7 @@ public class ClientsController {
     @ResponseStatus(HttpStatus.OK)
     public Page<Appointment> getAllClientAppointment(@RequestParam(defaultValue = "0") int page,
                                                     @RequestParam(defaultValue = "15") int size,
-                                                    @RequestParam(defaultValue = "staff") String sortBy,
+                                                    @RequestParam(defaultValue = "user") String sortBy,
                                                     @AuthenticationPrincipal Client currClientAuthenticated){
         return this.appointmentsService.getAppointmentByClient(page, size, sortBy, currClientAuthenticated.getId());
     }
