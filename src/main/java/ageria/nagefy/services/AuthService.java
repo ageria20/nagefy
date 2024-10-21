@@ -59,6 +59,8 @@ public class AuthService {
 
     public String checkCredentialsAndGenerateTokenClient(UserLoginDTO body){
         Client found = this.clientsService.findFromEmail(body.email());
+        System.out.println("BODY PSW: " + body.password());
+        System.out.println("HASED PSW USER: "+ found.getPassword());
         if(bcrypt.matches(body.password(), found.getPassword())){
             return jwtTools.createClientToken(found);
         }

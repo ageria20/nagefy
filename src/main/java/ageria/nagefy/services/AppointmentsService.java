@@ -55,6 +55,11 @@ public class AppointmentsService {
         return this.appointmentsRepository.findByStaffId(pageable, id);
     }
 
+    public Page<Appointment> getAppointmentByClient(int pages, int size, String sortBy, UUID id){
+        Pageable pageable = PageRequest.of(pages, size, Sort.by(sortBy));
+        return this.appointmentsRepository.findByClientId(pageable, id);
+    }
+
 
     public Appointment findById(UUID id){
         return this.appointmentsRepository.findById(id).orElseThrow(() -> new NotFoundException(id));

@@ -109,20 +109,18 @@ public class ClientsController {
 
     @GetMapping("/me")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Page<Client> findMe(@RequestParam(defaultValue = "0") int pages,
-                                @RequestParam(defaultValue = "10") int size,
-                                @RequestParam(defaultValue = "id") String sortBy) {
-        return this.clientsService.getAlLClients(pages, size, sortBy);
+    public Client findMe(@AuthenticationPrincipal Client currClientAuth){
+        return currClientAuth;
     }
 
     // GET Appointments by staff
     @GetMapping("/me/appointments")
     @ResponseStatus(HttpStatus.OK)
-    public Page<Appointment> getAllStaffAppointment(@RequestParam(defaultValue = "0") int page,
+    public Page<Appointment> getAllClientAppointment(@RequestParam(defaultValue = "0") int page,
                                                     @RequestParam(defaultValue = "15") int size,
                                                     @RequestParam(defaultValue = "staff") String sortBy,
                                                     @AuthenticationPrincipal Client currClientAuthenticated){
-        return this.appointmentsService.getAppointmentByStaff(page, size, sortBy, currClientAuthenticated.getId());
+        return this.appointmentsService.getAppointmentByClient(page, size, sortBy, currClientAuthenticated.getId());
     }
 
     @PostMapping("/me")
