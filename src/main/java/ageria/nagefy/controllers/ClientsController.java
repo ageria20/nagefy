@@ -117,7 +117,7 @@ public class ClientsController {
     @GetMapping("/me/appointments")
     @ResponseStatus(HttpStatus.OK)
     public Page<Appointment> getAllClientAppointment(@RequestParam(defaultValue = "0") int page,
-                                                    @RequestParam(defaultValue = "15") int size,
+                                                    @RequestParam(defaultValue = "8") int size,
                                                     @RequestParam(defaultValue = "user") String sortBy,
                                                     @AuthenticationPrincipal Client currClientAuthenticated){
         return this.appointmentsService.getAppointmentByClient(page, size, sortBy, currClientAuthenticated.getId());
@@ -147,4 +147,5 @@ public class ClientsController {
     public void deleteProfile(@AuthenticationPrincipal Client currClientAuth){
         this.clientsService.deleteClient(currClientAuth.getId());
     }
+
 }

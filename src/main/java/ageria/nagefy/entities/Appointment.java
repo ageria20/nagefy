@@ -45,7 +45,7 @@ public class Appointment {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private Cash cash;
 

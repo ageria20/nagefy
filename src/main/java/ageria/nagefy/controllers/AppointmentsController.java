@@ -67,7 +67,6 @@ public class AppointmentsController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
     public void deleteAppointment(@PathVariable UUID id){
         this.appointmentsService.findByIdAndDelete(id);
     }
