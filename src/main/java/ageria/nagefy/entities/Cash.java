@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -23,15 +24,19 @@ public class Cash {
     @Column(name = "payment_method")
     private String paymentMethod;
 
+    @Column(name = "created_At")
+    private LocalDateTime createdAt;
+
     private double total;
 
     @OneToOne
     @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     private Appointment appointment;
 
-    public Cash(Appointment appointment, String paymentMethod, double total ){
+    public Cash(Appointment appointment, String paymentMethod, LocalDateTime createdAt, double total ){
         this.appointment = appointment;
         this.paymentMethod = paymentMethod;
+        this.createdAt = createdAt;
         this.total = total;
     }
 
