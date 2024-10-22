@@ -5,6 +5,7 @@ import ageria.nagefy.dto.CashDTO;
 import ageria.nagefy.entities.Appointment;
 import ageria.nagefy.entities.Cash;
 import ageria.nagefy.exceptions.NotFoundException;
+import ageria.nagefy.repositories.CashCriteriaRepository;
 import ageria.nagefy.repositories.CashRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,9 @@ public class CashService {
     @Autowired
     AppointmentsService appointmentsService;
 
+    @Autowired
+    CashCriteriaRepository cashCriteriaRepository;
+
 
     public Page<Cash> getAllCashes(int pages, int size, String sortBy) {
         if (pages > 50) pages = 50;
@@ -42,6 +46,10 @@ public class CashService {
 
     public List<Cash> findFromPaymentMethod(String paymentMethod){
         return this.cashRepository.findByPaymentMethod(paymentMethod);
+    }
+
+    public List<Cash> getFilteredCash(ZonedDateTime startDate, ZonedDateTime endTime, String paymentMethod, UUID staffId){
+        return this.cashCriteriaRepository.findWithFilters(startDate, endTime, paymentMethod, staffId);
     }
 
     public Cash createCash(CashDTO body){

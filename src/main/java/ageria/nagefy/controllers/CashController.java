@@ -12,6 +12,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,6 +32,18 @@ public class CashController {
                               @RequestParam(defaultValue = "10") int size,
                               @RequestParam(defaultValue = "id") String sortBy) {
         return this.cashService.getAllCashes(pages, size, sortBy);
+    }
+
+    @GetMapping("/report")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Cash> getFilteredCash(
+            @RequestParam(required = false)ZonedDateTime startDate,
+            @RequestParam(required = false)ZonedDateTime endDate,
+            @RequestParam(required = false)String paymentMethod,
+            @RequestParam(required = false)UUID staffIf
+            ){
+        return this.cashService.getFilteredCash(startDate, endDate, paymentMethod, staffIf);
     }
 
 
