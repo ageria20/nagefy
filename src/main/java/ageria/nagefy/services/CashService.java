@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,7 +51,7 @@ public class CashService {
         Cash newCash = new Cash(
                 appointmentFromDB,
                 body.paymentMethod(),
-                LocalDateTime.now(),
+                ZonedDateTime.now(ZoneId.of("Europe/Rome")),
                 body.total()
         );
 
