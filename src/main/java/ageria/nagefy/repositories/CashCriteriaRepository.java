@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class CashCriteriaRepository {
         this.entityManager = entityManager;
     }
 
-    public List<Cash> findWithFilters(ZonedDateTime startDate, ZonedDateTime endDate, String paymentMethod, UUID staffId) {
+    public List<Cash> findWithFilters(LocalDate startDate, LocalDate endDate, String paymentMethod, UUID staffId) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Cash> query = cb.createQuery(Cash.class);
         Root<Cash> cashRoot = query.from(Cash.class);

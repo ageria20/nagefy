@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -38,8 +39,8 @@ public class CashController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<Cash> getFilteredCash(
-            @RequestParam(required = false)ZonedDateTime startDate,
-            @RequestParam(required = false)ZonedDateTime endDate,
+            @RequestParam(required = false)LocalDate startDate,
+            @RequestParam(required = false)LocalDate endDate,
             @RequestParam(required = false)String paymentMethod,
             @RequestParam(required = false)UUID staffIf
             ){

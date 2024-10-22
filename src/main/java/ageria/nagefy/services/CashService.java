@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -48,7 +49,7 @@ public class CashService {
         return this.cashRepository.findByPaymentMethod(paymentMethod);
     }
 
-    public List<Cash> getFilteredCash(ZonedDateTime startDate, ZonedDateTime endTime, String paymentMethod, UUID staffId){
+    public List<Cash> getFilteredCash(LocalDate startDate, LocalDate endTime, String paymentMethod, UUID staffId){
         return this.cashCriteriaRepository.findWithFilters(startDate, endTime, paymentMethod, staffId);
     }
 
