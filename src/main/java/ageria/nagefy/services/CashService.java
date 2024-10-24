@@ -6,6 +6,7 @@ import ageria.nagefy.dto.CashDTO;
 import ageria.nagefy.entities.Appointment;
 import ageria.nagefy.entities.Cash;
 import ageria.nagefy.exceptions.NotFoundException;
+import ageria.nagefy.repositories.AppointmentsRepository;
 import ageria.nagefy.repositories.CashCriteriaRepository;
 import ageria.nagefy.repositories.CashRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class CashService {
     AppointmentsService appointmentsService;
 
     @Autowired
+    AppointmentsRepository appointmentsRepository;
+
+    @Autowired
     CashCriteriaRepository cashCriteriaRepository;
 
 
@@ -58,9 +62,10 @@ public class CashService {
         Appointment appointmentFromDB = this.appointmentsService.findById(UUID.fromString(body.appointment()));
 
         appointmentFromDB.setPayed(true);
+        Appointment updatedAppointment = this.appointmentsRepository.save(appointmentFromDB);
 
         Cash newCash = new Cash(
-                appointmentFromDB,
+                updatedAppointment,
                 body.paymentMethod(),
                 ZonedDateTime.now(ZoneId.of("Europe/Rome")),
                 body.total()
