@@ -3,6 +3,8 @@ package ageria.nagefy.controllers;
 
 import ageria.nagefy.dto.AppointmentDTO;
 import ageria.nagefy.dto.AppointmentUpdateStaffDTO;
+import ageria.nagefy.dto.FreeSlotDTO;
+import ageria.nagefy.dto.StaffIdDTO;
 import ageria.nagefy.entities.Appointment;
 import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.BadRequestException;
@@ -16,6 +18,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,6 +39,19 @@ public class AppointmentsController {
                                      @RequestParam(defaultValue = "id") String sortBy) {
         return this.appointmentsService.getAllAppointments(pages, size, sortBy);
     }
+
+    @GetMapping("/free-slots")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public List<FreeSlotDTO> getFreeSlots(@RequestParam StaffIdDTO staff,
+                                          @RequestParam String date) {
+        LocalDateTime startOfDay = LocalDateTime.parse(date);
+        LocalDateTime endOfDay = startOfDay.plusHours(8).minusSeconds(1);
+
+        // Ottieni gli slot liberi dallo staff per il giorno specifico
+        return appointmentsService.getFreeSlotsForStaff(staff, startOfDay, endOfDay);
+    }
+
 
     @GetMapping("/{appointmentId}")
     @ResponseStatus(HttpStatus.OK)

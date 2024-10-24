@@ -3,6 +3,8 @@ package ageria.nagefy.services;
 
 import ageria.nagefy.dto.AppointmentDTO;
 import ageria.nagefy.dto.AppointmentUpdateStaffDTO;
+import ageria.nagefy.dto.FreeSlotDTO;
+import ageria.nagefy.dto.StaffIdDTO;
 import ageria.nagefy.entities.*;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.exceptions.NotFoundException;
@@ -15,10 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -120,6 +119,53 @@ public class AppointmentsService {
         );
         return this.appointmentsRepository.save(newAppointment);
     }
+
+
+    public List<FreeSlotDTO> getFreeSlotsForStaff(StaffIdDTO staff, LocalDateTime startOfDay, LocalDateTime endOfDay) {
+        Staff found = staffsService.findById(UUID.fromString(staff.staff()));
+
+        // Recupera tutte le prenotazioni dello staff nel giorno specificato
+        List<Appointment> appointments = appointmentsRepository.findByStaffAndDate(found, startOfDay, endOfDay);
+        System.out.println("APPOINTMENTS: "+appointments);
+        // Ordina le prenotazioni per orario di inizio
+        List<Appointment> sortedAppointments = appointments.stream()
+                .sorted(Comparator.comparing(Appointment::getStartTime))
+                .toList();
+
+        System.out.println("SORTED APPOINTMENT: " + sortedAppointments);
+
+        // Lista per memorizzare gli slot liberi
+        List<FreeSlotDTO> freeSlots = new ArrayList<>();
+
+        // Se non ci sono appuntamenti, lo staff è disponibile per tutto l'intervallo
+        if (sortedAppointments.isEmpty()) {
+            freeSlots.add(new FreeSlotDTO(startOfDay, endOfDay));
+            return freeSlots;
+        }
+
+        // Controlla l'intervallo tra l'inizio della giornata e il primo appuntamento
+        LocalDateTime previousEndTime = startOfDay;
+        for (Appointment appointment : sortedAppointments) {
+            LocalDateTime appointmentStart = appointment.getStartTime();
+            LocalDateTime appointmentEnd = appointment.getEndTime();
+
+            // Se c'è un gap tra la fine del periodo precedente e l'inizio dell'appuntamento corrente, è uno slot libero
+            if (previousEndTime.isBefore(appointmentStart)) {
+                freeSlots.add(new FreeSlotDTO(previousEndTime, appointmentStart));
+            }
+            // Aggiorna la fine dell'ultimo appuntamento
+            previousEndTime = appointmentEnd;
+        }
+
+        // Controlla l'intervallo tra l'ultimo appuntamento e la fine della giornata
+        if (previousEndTime.isBefore(endOfDay)) {
+            freeSlots.add(new FreeSlotDTO(previousEndTime, endOfDay));
+        }
+
+        return freeSlots;
+    }
+
+
 
     public Appointment findByIdAndUpdate(UUID id, AppointmentUpdateStaffDTO body){
         Appointment appointmentFromDB = this.findById(id);
