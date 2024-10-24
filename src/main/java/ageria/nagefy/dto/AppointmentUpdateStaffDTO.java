@@ -13,6 +13,7 @@ public record AppointmentUpdateStaffDTO(@NotNull(message = "Treatments are requi
                                         String staff,
                                         @NotNull(message = "Start Time is required")
                                         LocalDateTime startTime,
-                                        LocalDateTime endTime
+                                        LocalDateTime endTime,
+                                        boolean isPayed
 ){
 }

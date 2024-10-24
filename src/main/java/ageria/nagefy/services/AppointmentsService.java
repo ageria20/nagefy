@@ -78,7 +78,8 @@ public class AppointmentsService {
                 treatmentsFromDB,
                 staffFromDB,
                 startAppointment,
-                endAppointment
+                endAppointment,
+                false
         );
         return this.appointmentsRepository.save(newAppointment);
     }
@@ -97,7 +98,8 @@ public class AppointmentsService {
                 treatmentsFromDB,
                 staffFromDB,
                 startAppointment,
-                endAppointment
+                endAppointment,
+                false
         );
         return this.appointmentsRepository.save(newAppointment);
     }
@@ -115,7 +117,8 @@ public class AppointmentsService {
                 treatmentsFromDB,
                 staffFromDB,
                 startAppointment,
-                endAppointment
+                endAppointment,
+                false
         );
         return this.appointmentsRepository.save(newAppointment);
     }
@@ -176,6 +179,7 @@ public class AppointmentsService {
         appointmentFromDB.setStaff(staffFromDB);
         appointmentFromDB.setStartTime(startAppointment);
         appointmentFromDB.setEndTime(endAppointment);
+        appointmentFromDB.setPayed(body.isPayed());
         return this.appointmentsRepository.save(appointmentFromDB);
     }
 

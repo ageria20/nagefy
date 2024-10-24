@@ -1,6 +1,7 @@
 package ageria.nagefy.services;
 
 
+import ageria.nagefy.dto.AppointmentDTO;
 import ageria.nagefy.dto.CashDTO;
 import ageria.nagefy.entities.Appointment;
 import ageria.nagefy.entities.Cash;
@@ -56,6 +57,7 @@ public class CashService {
     public Cash createCash(CashDTO body){
         Appointment appointmentFromDB = this.appointmentsService.findById(UUID.fromString(body.appointment()));
 
+        appointmentFromDB.setPayed(true);
 
         Cash newCash = new Cash(
                 appointmentFromDB,
@@ -63,7 +65,6 @@ public class CashService {
                 ZonedDateTime.now(ZoneId.of("Europe/Rome")),
                 body.total()
         );
-
         return this.cashRepository.save(newCash);
 
     }

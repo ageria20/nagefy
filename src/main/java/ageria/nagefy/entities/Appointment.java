@@ -38,6 +38,8 @@ public class Appointment {
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
+    @Column(name = "is_payed")
+    private boolean isPayed;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -51,12 +53,12 @@ public class Appointment {
 
 
 
-    public Appointment(User userFromDB, List<Treatment> treatmentsFromDB, Staff staffFromDB, LocalDateTime startDate, LocalDateTime endDate) {
+    public Appointment(User userFromDB, List<Treatment> treatmentsFromDB, Staff staffFromDB, LocalDateTime startDate, LocalDateTime endDate, boolean isPayed) {
     this.user = userFromDB;
     this.treatmentsList = treatmentsFromDB;
     this.staff = staffFromDB;
     this.startTime = startDate;
     this.endTime = endDate;
-
+    this.isPayed = isPayed;
     }
 }
