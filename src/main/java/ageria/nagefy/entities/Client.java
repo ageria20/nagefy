@@ -21,8 +21,8 @@ public class Client extends User {
 
 
 
-    public Client(String name, String surname, String telephone, String email, String password, Role role, String avatar) {
-        super(name, surname, telephone, email, password, role, avatar);
+    public Client(String name, String surname, String telephone, String email, String password,  boolean isVerified, Role role, String avatar) {
+        super(name, surname, telephone, email, password, isVerified, role, avatar);
 
     }
 

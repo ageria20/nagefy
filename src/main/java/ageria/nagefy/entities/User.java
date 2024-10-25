@@ -42,18 +42,20 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    
+    @Column(name = "is_verified")
+    private boolean isVerified;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Appointment> appointmentList;
 
-    public User(String name, String surname, String telephone, String email, String password, Role role, String avatar) {
+    public User(String name, String surname, String telephone, String email, String password, boolean isVerified, Role role, String avatar) {
         this.name = name;
         this.surname = surname;
         this.telephone = telephone;
         this.email = email;
         this.password = password;
+        this.isVerified = isVerified;
         this.role = role;
         this.avatar = avatar;
     }

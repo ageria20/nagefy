@@ -67,6 +67,7 @@ public class ClientsService {
                 body.telephone(),
                 body.email(),
                 bcrypt.encode(body.password()),
+                false,
                 Role.USER,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
@@ -92,6 +93,7 @@ public class ClientsService {
                 body.telephone(),
                 body.email(),
                 bcrypt.encode(token),
+                false,
                 Role.USER,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 

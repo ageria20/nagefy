@@ -50,6 +50,7 @@ public class UsersService {
                 body.telephone(),
                 body.email(),
                 bcrypt.encode(body.password()),
+                false,
                 Role.ADMIN,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 

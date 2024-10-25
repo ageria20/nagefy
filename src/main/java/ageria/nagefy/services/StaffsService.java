@@ -63,6 +63,7 @@ public class StaffsService {
                 body.telephone(),
                 body.email(),
                 bcrypt.encode(body.password()),
+                false,
                 Role.EMPLOYEE,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
@@ -76,6 +77,7 @@ public class StaffsService {
                 body.telephone(),
                 body.email(),
                 bcrypt.encode(token),
+                false,
                 Role.EMPLOYEE,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
