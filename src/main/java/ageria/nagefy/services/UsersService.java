@@ -54,6 +54,7 @@ public class UsersService {
                 Role.ADMIN,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
+
         return this.userRepository.save(newUser);
     }
 

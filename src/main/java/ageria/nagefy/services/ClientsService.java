@@ -33,7 +33,7 @@ public class ClientsService {
     UserRepository userRepository;
 
     @Autowired
-    EmailService emailSrvice;
+    EmailService emailService;
 
 
     @Autowired
@@ -60,7 +60,7 @@ public class ClientsService {
         return this.clientsRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
     }
 
-    public Client saveClient(StaffDTO body){
+    public Client saveClient(StaffDTO body) throws MessagingException {
         Client newClient = new Client(
                 body.name(),
                 body.surname(),
@@ -71,10 +71,14 @@ public class ClientsService {
                 Role.USER,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
-        return this.clientsRepository.save(newClient);
+
+
+        Client savedClient = this.clientsRepository.save(newClient);
+        this.emailService.sendEmailVerificationClient(savedClient.getEmail());
+        return savedClient;
     }
 
-    public Client createNewClient(ClientDTO body) {
+    public Client createNewClient(ClientDTO body) throws MessagingException {
         Client newClient = new Client(
                 body.name(),
                 body.surname(),
@@ -83,7 +87,10 @@ public class ClientsService {
                 Role.USER,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
-        return this.clientsRepository.save(newClient);
+
+        Client savedClient = this.clientsRepository.save(newClient);
+        this.emailService.sendEmailVerificationClient(savedClient.getEmail());
+        return savedClient;
     }
     public Client createNewClientWithPassword(ClientDTO body) throws MessagingException {
         String token = UUID.randomUUID().toString();
@@ -98,7 +105,7 @@ public class ClientsService {
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
         Client savedClient = this.clientsRepository.save(newClient);
-        this.emailSrvice.sendEmailClient(savedClient.getEmail());
+        this.emailService.sendEmailClient(savedClient.getEmail());
         return savedClient;
     }
 
@@ -118,6 +125,18 @@ public class ClientsService {
         client.setPassword(bcrypt.encode(newPassword.password()));
         Client updatedClient = this.clientsRepository.save(client);
         System.out.println("UPDATED PASSWORD: " + updatedClient.getPassword());
+
+        return updatedClient;
+    }
+
+    public Client findByEmailAndVerify(String email){
+        Client client = this.findFromEmail(email);
+        if (client == null) {
+            throw new NotFoundException("Email non trovata");
+        }
+
+        client.setVerified(true);
+        Client updatedClient = this.clientsRepository.save(client);
 
         return updatedClient;
     }

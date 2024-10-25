@@ -10,6 +10,7 @@ import ageria.nagefy.services.AuthService;
 import ageria.nagefy.services.ClientsService;
 import ageria.nagefy.services.StaffsService;
 import ageria.nagefy.services.UsersService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -47,7 +48,7 @@ public class AuthController {
     }
     @PostMapping("/client-register")
     @ResponseStatus(HttpStatus.CREATED)
-    public Client registerClient(@RequestBody @Validated StaffDTO body, BindingResult validationRes){
+    public Client registerClient(@RequestBody @Validated StaffDTO body, BindingResult validationRes) throws MessagingException {
         if(validationRes.hasErrors()) {
             String msg = validationRes.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
@@ -55,6 +56,13 @@ public class AuthController {
             return this.clientsService.saveClient(body);
         }
     }
+
+    @PutMapping("/verify-email/{email}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Client verifyEmailClient(@PathVariable String email){
+        return this.clientsService.findByEmailAndVerify(email);
+    }
+
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public UserRespDTO loginAdmin(@RequestBody UserLoginDTO body){

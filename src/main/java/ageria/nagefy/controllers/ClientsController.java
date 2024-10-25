@@ -61,7 +61,7 @@ public class ClientsController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Client createStaffMember(@RequestBody @Validated StaffDTO body, BindingResult validation){
+    public Client createStaffMember(@RequestBody @Validated StaffDTO body, BindingResult validation) throws MessagingException {
         if (validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
