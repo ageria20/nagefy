@@ -86,7 +86,13 @@ public class StaffsService {
         return savedStaff;
     }
 
-    public Staff findByIdAndUpdate(UUID id, StaffDTO body){
+    public Staff findByIdAndUpdate(UUID id, StaffUpdateDTO body){
+        Staff found = this.findById(id);
+        found.setName(body.name());
+        found.setEmail(body.email());
+        return this.staffRepository.save(found);
+    }
+    public Staff findByIdAndUpdateForMe(UUID id, StaffDTO body){
         Staff found = this.findById(id);
         found.setName(body.name());
         found.setEmail(body.email());

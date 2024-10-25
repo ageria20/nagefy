@@ -84,7 +84,7 @@ public class StaffsController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Staff updateStaffMember(@RequestBody @Validated StaffDTO body, @PathVariable UUID id, BindingResult validation){
+    public Staff updateStaffMember(@RequestBody @Validated StaffUpdateDTO body, @PathVariable UUID id, BindingResult validation){
         if (validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
@@ -126,6 +126,6 @@ public class StaffsController {
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
         }
-        return this.staffsService.findByIdAndUpdate(currStaffAuthenticated.getId(), body);
+        return this.staffsService.findByIdAndUpdateForMe(currStaffAuthenticated.getId(), body);
     }
 }

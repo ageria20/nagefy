@@ -57,7 +57,7 @@ public class AuthController {
         }
     }
 
-    @PutMapping("/verify-email/{email}")
+    @PutMapping("/verify-client/{email}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Client verifyEmailClient(@PathVariable String email){
         return this.clientsService.findByEmailAndVerify(email);

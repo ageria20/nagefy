@@ -132,11 +132,11 @@ public class EmailService {
                 "<html>" +
                 "<head>" +
                 "<style>" +
-                "  .email-container { font-family: Arial, sans-serif; padding: 20px; }" +
-                "  .header { background-color: blueviolet; color: white; padding: 10px; text-align: center; }" +
+                "  .email-container { font-family: Arial, sans-serif; padding: 20px; width: 100% }" +
+                "  .header { background-color: blueviolet; color: white; padding: 10px; text-align: center; width: 50%}" +
                 "  .content { margin-top: 20px; font-size: 16px; line-height: 1.6; }" +
                 "  .footer { margin-top: 20px; font-size: 14px; color: #777; text-align: center; }" +
-                "  .btn { background-color: blueviolet; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }" +
+                "  .btn { background-color: blueviolet; color: white !important; padding: 10px 20px; text-decoration: none; border-radius: 5px; }" +
                 "</style>" +
                 "</head>" +
                 "<body>" +
