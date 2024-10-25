@@ -63,6 +63,12 @@ public class AuthController {
         return this.clientsService.findByEmailAndVerify(email);
     }
 
+    @PutMapping("/verify-admin/{email}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public User verifyEmailAdmin(@PathVariable String email){
+        return this.usersService.findByEmailAndVerify(email);
+    }
+
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public UserRespDTO loginAdmin(@RequestBody UserLoginDTO body){
@@ -83,7 +89,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public User registerUser(@RequestBody @Validated UserDTO body, BindingResult validationRes){
+    public User registerUser(@RequestBody @Validated UserDTO body, BindingResult validationRes) throws MessagingException {
         if(validationRes.hasErrors()) {
             String msg = validationRes.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);

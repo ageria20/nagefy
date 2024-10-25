@@ -1,11 +1,14 @@
 package ageria.nagefy.services;
 
 import ageria.nagefy.dto.UserDTO;
+import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.User;
 import ageria.nagefy.enums.Role;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.UserRepository;
+import jakarta.mail.MessagingException;
+import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +24,9 @@ public class UsersService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    EmailService emailService;
 
     @Autowired
     PasswordEncoder bcrypt;
@@ -40,7 +46,7 @@ public class UsersService {
         return this.userRepository.findByEmail(email);
     }
 
-    public User saveUser(UserDTO body){
+    public User saveUser(UserDTO body) throws MessagingException {
         if(this.userRepository.existsByEmail(body.email())){
             throw new BadRequestException("EMAIL ALREADY PRESENT IN DATABASE");
         }
@@ -54,7 +60,8 @@ public class UsersService {
                 Role.ADMIN,
                 "https://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
 
-
+        User savedUser = this.userRepository.save(newUser);
+        this.emailService.sendEmailVerificationAdmin(savedUser.getEmail());
         return this.userRepository.save(newUser);
     }
 
@@ -66,6 +73,20 @@ public class UsersService {
         found.setEmail(body.email());
         return this.userRepository.save(found);
     }
+
+
+    public User findByEmailAndVerify(String email){
+        User user = this.findFromEmail(email);
+        if (user == null) {
+            throw new NotFoundException("Email non trovata");
+        }
+
+        user.setVerified(true);
+        User updatedClient = this.userRepository.save(user);
+
+        return updatedClient;
+    }
+
 
     public void deleteUser(UUID id){
         User found = this.findById(id);

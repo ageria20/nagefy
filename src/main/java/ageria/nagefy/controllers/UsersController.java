@@ -10,6 +10,7 @@ import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.services.AppointmentsService;
 import ageria.nagefy.services.AuthService;
 import ageria.nagefy.services.UsersService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,7 @@ public class UsersController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyAuthority('ADMIN','EMPLOYEE')")
-    public User creaUser(@RequestBody @Validated UserDTO body, BindingResult validation){
+    public User creaUser(@RequestBody @Validated UserDTO body, BindingResult validation) throws MessagingException {
         if(validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
