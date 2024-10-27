@@ -26,7 +26,7 @@ public class TreatmentsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
+
     public Page<Treatment> findAll(@RequestParam(defaultValue = "0") int pages,
                                    @RequestParam(defaultValue = "10") int size,
                                    @RequestParam(defaultValue = "id") String sortBy) {
