@@ -43,10 +43,13 @@ public class AppointmentsController {
     @GetMapping("/free-slots")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public List<FreeSlotDTO> getFreeSlots(@RequestParam StaffIdDTO staff,
-                                          @RequestParam String date) {
+    public List<FreeSlotDTO> getFreeSlots(
+            @RequestParam StaffIdDTO staff,
+            @RequestParam String date,
+            @RequestParam(required = false, defaultValue = "8") int hoursOpen // durata giornata
+    ) {
         LocalDateTime startOfDay = LocalDateTime.parse(date);
-        LocalDateTime endOfDay = startOfDay.plusHours(8).minusSeconds(1);
+        LocalDateTime endOfDay = startOfDay.plusHours(hoursOpen).minusSeconds(1);
 
         // Ottieni gli slot liberi dallo staff per il giorno specifico
         return appointmentsService.getFreeSlotsForStaff(staff, startOfDay, endOfDay);

@@ -129,44 +129,41 @@ public class AppointmentsService {
 
         // Recupera tutte le prenotazioni dello staff nel giorno specificato
         List<Appointment> appointments = appointmentsRepository.findByStaffAndDate(found, startOfDay, endOfDay);
-        System.out.println("APPOINTMENTS: "+appointments);
+
         // Ordina le prenotazioni per orario di inizio
         List<Appointment> sortedAppointments = appointments.stream()
                 .sorted(Comparator.comparing(Appointment::getStartTime))
                 .toList();
 
-        System.out.println("SORTED APPOINTMENT: " + sortedAppointments);
+        // Lista per memorizzare gli slot liberi divisi per ogni ora
+        List<FreeSlotDTO> freeHourlySlots = new ArrayList<>();
 
-        // Lista per memorizzare gli slot liberi
-        List<FreeSlotDTO> freeSlots = new ArrayList<>();
+        LocalDateTime current = startOfDay;
 
-        // Se non ci sono appuntamenti, lo staff è disponibile per tutto l'intervallo
-        if (sortedAppointments.isEmpty()) {
-            freeSlots.add(new FreeSlotDTO(startOfDay, endOfDay));
-            return freeSlots;
-        }
+        while (current.isBefore(endOfDay)) {
+            // Calcola l'orario di fine per ogni slot orario (ogni intervallo dura al massimo un'ora)
+            LocalDateTime slotStart = current;
+            LocalDateTime slotEnd = slotStart.plusHours(1).isAfter(endOfDay) ? endOfDay : slotStart.plusHours(1);
 
-        // Controlla l'intervallo tra l'inizio della giornata e il primo appuntamento
-        LocalDateTime previousEndTime = startOfDay;
-        for (Appointment appointment : sortedAppointments) {
-            LocalDateTime appointmentStart = appointment.getStartTime();
-            LocalDateTime appointmentEnd = appointment.getEndTime();
+            // Verifica se lo slot orario si sovrappone con qualche appuntamento
+            boolean isOverlapping = sortedAppointments.stream()
+                    .anyMatch(appointment ->
+                            (appointment.getStartTime().isBefore(slotEnd) && appointment.getEndTime().isAfter(slotStart))
+                    );
 
-            // Se c'è un gap tra la fine del periodo precedente e l'inizio dell'appuntamento corrente, è uno slot libero
-            if (previousEndTime.isBefore(appointmentStart)) {
-                freeSlots.add(new FreeSlotDTO(previousEndTime, appointmentStart));
+            // Se non c'è sovrapposizione, aggiungi lo slot orario come slot libero
+            if (!isOverlapping) {
+                freeHourlySlots.add(new FreeSlotDTO(slotStart, slotEnd));
             }
-            // Aggiorna la fine dell'ultimo appuntamento
-            previousEndTime = appointmentEnd;
+
+            // Avanza di un'ora
+            current = slotEnd;
         }
 
-        // Controlla l'intervallo tra l'ultimo appuntamento e la fine della giornata
-        if (previousEndTime.isBefore(endOfDay)) {
-            freeSlots.add(new FreeSlotDTO(previousEndTime, endOfDay));
-        }
-
-        return freeSlots;
+        return freeHourlySlots;
     }
+
+
 
 
 
