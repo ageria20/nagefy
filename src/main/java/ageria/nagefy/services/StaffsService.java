@@ -7,6 +7,7 @@ import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.Treatment;
 import ageria.nagefy.entities.User;
 import ageria.nagefy.enums.Role;
+import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.StaffRepository;
 import ageria.nagefy.repositories.UserRepository;
@@ -57,6 +58,9 @@ public class StaffsService {
     }
 
     public Staff saveStaff(StaffDTO body){
+        if(this.staffRepository.existsByEmail(body.email())){
+            throw new BadRequestException("EMAIL ALREADY PRESENT IN DATABASE");
+        }
         Staff newStaff = new Staff(
                 body.name(),
                 body.surname(),
@@ -70,6 +74,9 @@ public class StaffsService {
         return this.staffRepository.save(newStaff);
     }
     public Staff createNewStaff(NewStaffDTO body) throws MessagingException {
+        if(this.staffRepository.existsByEmail(body.email())){
+            throw new BadRequestException("EMAIL ALREADY PRESENT IN DATABASE");
+        }
         String token = UUID.randomUUID().toString();
         Staff newStaff = new Staff(
                 body.name(),

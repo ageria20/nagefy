@@ -7,6 +7,7 @@ import ageria.nagefy.dto.StaffDTO;
 import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.enums.Role;
+import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.ClientsRepository;
 import ageria.nagefy.repositories.UserRepository;
@@ -61,6 +62,9 @@ public class ClientsService {
     }
 
     public Client saveClient(StaffDTO body) throws MessagingException {
+        if(this.clientsRepository.existsByEmail(body.email())){
+            throw new BadRequestException("EMAIL ALREADY PRESENT IN DATABASE");
+        }
         Client newClient = new Client(
                 body.name(),
                 body.surname(),
@@ -93,6 +97,9 @@ public class ClientsService {
         return savedClient;
     }
     public Client createNewClientWithPassword(ClientDTO body) throws MessagingException {
+        if(this.clientsRepository.existsByEmail(body.email())){
+            throw new BadRequestException("EMAIL ALREADY PRESENT IN DATABASE");
+        }
         String token = UUID.randomUUID().toString();
         Client newClient = new Client(
                 body.name(),
