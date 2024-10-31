@@ -129,29 +129,22 @@ public class EmailService {
 
 
         String htmlBody = "<!DOCTYPE html>" +
-                "<html>" +
+                "<html lang='it'>" +
                 "<head>" +
-                "<style>" +
-                "  .email-container { font-family: Arial, sans-serif; padding: 20px; }" +
-                "  .header { background-color: blueviolet; color: white; padding: 10px; text-align: center; width: 50%}" +
-                "  .content { margin-top: 20px; color: black !important; font-size: 16px; line-height: 1.6; }" +
-                "  .footer { margin-top: 20px; font-size: 14px; color: #777; text-align: center; }" +
-                "  .btn { background-color: blueviolet; color: white !important; padding: 10px 20px; text-decoration: none; border-radius: 5px; }" +
-                "</style>" +
+                "<meta charset='UTF-8'>" +
+                "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                "<title>Benvenuto su Nagefy!</title>" +
                 "</head>" +
-                "<body>" +
-                "<div class='email-container'>" +
-
-                "    <h1>Verifica Email</h1>" +
-
-                "  <div class='content'>" +
-                "    <h3>Grazie per esserti registrato</h3>" +
-                "    <p>Clicca per verificare la tua mail</p>" +
-                "    <a href='" + verifyLink + "' class='btn'>Verifica Email</a>" +
-                "  </div>" +
-                "  <div class='footer'>" +
-                "    <p>© 2024 Nagefy. All rights reserved.</p>" +
-                "  </div>" +
+                "<body style='font-family: Arial, sans-serif; background-color: bluviolet; padding: 20px; text-align: center;'>" +
+                "<div style='background-color: white; padding: 40px; max-width: 500px; margin: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>" +
+                "<h1 style='color: #1a51bf;'>Benvenuto, " + "!</h1>" +
+                "<p style='color: #333;'>Grazie per esserti unito a Nagefy</p>" +
+                "<p style='color: #333;'>Siamo lieti di averti con noi.</p>" +
+                "<p style='color: #333;'>Puoi ora esplorare i nostri prodotti e iniziare a fare acquisti.</p>" +
+                "<a href='" + verifyLink +
+                "style='background-color: bluviolet; color: white; padding: 15px 25px; border: none; border-radius: 5px; font-size: 16px; text-decoration: none; display: inline-block; margin-top: 20px;'>Conferma email</a>" +
+                "<p style='color: #333; margin-top: 20px;'>Se hai domande o hai bisogno di assistenza, non esitare a contattarci.</p>" +
+                "<small style='color: #333;'>Nagefy</small>" +
                 "</div>" +
                 "</body>" +
                 "</html>";
@@ -176,29 +169,23 @@ public class EmailService {
         String verifyLink = "https://nagefy.netlify.app/verify-admin/" + toMail ;
 
 
-        String htmlBody = "<!DOCTYPE html>" +
-                "<html>" +
+        String htmlBody =    "<!DOCTYPE html>" +
+                "<html lang='it'>" +
                 "<head>" +
-                "<style>" +
-                "  .email-container { font-family: Arial, sans-serif; padding: 20px; }" +
-                "  .header { background-color: blueviolet; color: white; padding: 10px; text-align: center; width: 50%}" +
-                "  .content { margin-top: 20px; color: black !important; font-size: 16px; line-height: 1.6; }" +
-                "  .footer { margin-top: 20px; font-size: 14px; color: #777; text-align: center; }" +
-                "  .btn { background-color: blueviolet; color: white !important; padding: 10px 20px; text-decoration: none; border-radius: 5px; }" +
-                "</style>" +
+                "<meta charset='UTF-8'>" +
+                "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                "<title>Benvenuto su Nagefy!</title>" +
                 "</head>" +
-                "<body>" +
-                "<div class='email-container'>" +
-
-                "    <h1>Verifica Email</h1>" +
-                "  <div class='content'>" +
-                "    <p>Grazie per esserti registrato</p>" +
-                "    <p>Clicca per verificare la tua mail</p>" +
-                "    <a href='" + verifyLink + "' class='btn'>Verifica Email</a>" +
-                "  </div>" +
-                "  <div class='footer'>" +
-                "    <p>© 2024 Nagefy. All rights reserved.</p>" +
-                "  </div>" +
+                "<body style='font-family: Arial, sans-serif; background-color: bluviolet; padding: 20px; text-align: center;'>" +
+                "<div style='background-color: white; padding: 40px; max-width: 500px; margin: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>" +
+                "<h1 style='color: #1a51bf;'>Benvenuto, " + "!</h1>" +
+                "<p style='color: #333;'>Grazie per esserti unito a Nagefy</p>" +
+                "<p style='color: #333;'>Siamo lieti di averti con noi.</p>" +
+                "<p style='color: #333;'>Puoi ora esplorare i nostri prodotti e iniziare a fare acquisti.</p>" +
+                "<a href='" + verifyLink +
+                "style='background-color: bluviolet; color: white; padding: 15px 25px; border: none; border-radius: 5px; font-size: 16px; text-decoration: none; display: inline-block; margin-top: 20px;'>Conferma email</a>" +
+                "<p style='color: #333; margin-top: 20px;'>Se hai domande o hai bisogno di assistenza, non esitare a contattarci.</p>" +
+                "<small style='color: #333;'>Nagefy</small>" +
                 "</div>" +
                 "</body>" +
                 "</html>";
