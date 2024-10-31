@@ -104,7 +104,6 @@ public class UsersController {
 
     @PostMapping("/me")
     @ResponseStatus(HttpStatus.CREATED)
-    // TODO DA MODIFICARE IN PAGE
     public Appointment createAppointmentUser(@AuthenticationPrincipal User currUserAuth, @RequestBody @Validated AppointmentDTO body, BindingResult validation){
         if(validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
