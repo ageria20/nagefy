@@ -128,10 +128,10 @@ public class ClientsService {
         if (client == null) {
             throw new NotFoundException("Email non trovata");
         }
-        System.out.println("NEW PASSWORD: " + newPassword.password());
+
         client.setPassword(bcrypt.encode(newPassword.password()));
         Client updatedClient = this.clientsRepository.save(client);
-        System.out.println("UPDATED PASSWORD: " + updatedClient.getPassword());
+
 
         return updatedClient;
     }

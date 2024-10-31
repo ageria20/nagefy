@@ -36,8 +36,7 @@ public class AuthService {
 
     public String checkCredentialsAndGenerateToken(UserLoginDTO body){
         User found = this.userService.findFromEmail(body.email());
-        System.out.println("BODY PSW: " + body.password());
-        System.out.println("HASED PSW USER: "+ found.getPassword());
+       
         if(bcrypt.matches(body.password(), found.getPassword()) & found.isVerified()){
             return jwtTools.createUserToken(found);
         }
@@ -59,8 +58,7 @@ public class AuthService {
 
     public String checkCredentialsAndGenerateTokenClient(UserLoginDTO body){
         Client found = this.clientsService.findFromEmail(body.email());
-        System.out.println("BODY PSW: " + body.password());
-        System.out.println("HASED PSW USER: "+ found.getPassword());
+
         if(bcrypt.matches(body.password(), found.getPassword()) & found.isVerified()){
             return jwtTools.createClientToken(found);
         }

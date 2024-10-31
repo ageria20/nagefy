@@ -111,10 +111,10 @@ public class StaffsService {
         if (staff == null) {
             throw new NotFoundException("Email non trovata");
         }
-        System.out.println("NEW PASSWORD: " + newPassword.password());
+
         staff.setPassword(bcrypt.encode(newPassword.password()));
         Staff updatedStaff = this.staffRepository.save(staff);
-        System.out.println("UPDATED PASSWORD: " + updatedStaff.getPassword());
+
 
         return updatedStaff;
     }
