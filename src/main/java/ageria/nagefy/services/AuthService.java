@@ -36,7 +36,7 @@ public class AuthService {
 
     public String checkCredentialsAndGenerateToken(UserLoginDTO body){
         User found = this.userService.findFromEmail(body.email());
-       
+
         if(bcrypt.matches(body.password(), found.getPassword()) & found.isVerified()){
             return jwtTools.createUserToken(found);
         }

@@ -30,7 +30,7 @@ public class EmailService {
         helper.setSubject("Password Reset");
 
 
-        String resetLink = "http://localhost:5173/reset-password/" + toMail;
+        String resetLink = "https://nagefy.netlify.app/reset-password/" + toMail;
 
 
         String htmlBody = "<!DOCTYPE html>" +
@@ -77,7 +77,7 @@ public class EmailService {
         helper.setSubject("Password Reset");
 
 
-        String resetLink = "http://localhost:5173/reset-password-staff/" + toMail;
+        String resetLink = "https://nagefy.netlify.app/reset-password-staff/" + toMail;
 
 
         String htmlBody = "<!DOCTYPE html>" +
@@ -122,10 +122,10 @@ public class EmailService {
         }
 
         helper.setTo(toMail);
-        helper.setSubject("Password Reset");
+        helper.setSubject("Verifica Mail");
 
 
-        String verifyLink = "http://localhost:5173/verify-client/" + toMail;
+        String verifyLink = "https://nagefy.netlify.app/verify-client/" + toMail;
 
 
         String htmlBody = "<!DOCTYPE html>" +
@@ -170,10 +170,10 @@ public class EmailService {
         }
 
         helper.setTo(toMail);
-        helper.setSubject("Password Reset");
+        helper.setSubject("Verifica Mail");
 
 
-        String verifyLink = "http://localhost:5173/verify-admin/" + toMail ;
+        String verifyLink = "https://nagefy.netlify.app/verify-admin/" + toMail ;
 
 
         String htmlBody = "<!DOCTYPE html>" +
@@ -191,7 +191,6 @@ public class EmailService {
                 "<div class='email-container'>" +
 
                 "    <h1>Verifica Email</h1>" +
-
                 "  <div class='content'>" +
                 "    <p>Grazie per esserti registrato</p>" +
                 "    <p>Clicca per verificare la tua mail</p>" +
