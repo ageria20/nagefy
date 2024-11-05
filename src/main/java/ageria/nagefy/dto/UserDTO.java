@@ -10,7 +10,7 @@ public record UserDTO(@NotEmpty(message = "Name is required")
                       @NotEmpty(message = "Surname is required")
                       String surname,
                       @NotEmpty(message = "Telephone is required")
-                      @Size(min = 9, max = 10, message = "Name has to be 9 or 30 characters")
+                      @Size(min = 9, max = 10, message = "Telephone has to be 9 or 30 characters")
                       String telephone,
                       @NotEmpty(message = "Email  is required")
                       String email,

@@ -137,10 +137,9 @@ public class EmailService {
                 "</head>" +
                 "<body style='font-family: Arial, sans-serif; background-color: bluviolet; padding: 20px; text-align: center;'>" +
                 "<div style='background-color: white; padding: 40px; max-width: 500px; margin: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>" +
-                "<h1 style='color: #1a51bf;'>Benvenuto, " + "!</h1>" +
+                "<h1 style='color: bluviolet;'>Benvenuto" + "!</h1>" +
                 "<p style='color: #333;'>Grazie per esserti unito a Nagefy</p>" +
                 "<p style='color: #333;'>Siamo lieti di averti con noi.</p>" +
-                "<p style='color: #333;'>Puoi ora esplorare i nostri prodotti e iniziare a fare acquisti.</p>" +
                 "<a href='" + verifyLink + "'>" +
                 "style='background-color: bluviolet; color: white; padding: 15px 25px; border: none; border-radius: 5px; font-size: 16px; text-decoration: none; display: inline-block; margin-top: 20px;'>Conferma email</a>" +
                 "<p style='color: #333; margin-top: 20px;'>Se hai domande o hai bisogno di assistenza, non esitare a contattarci.</p>" +
@@ -178,11 +177,10 @@ public class EmailService {
                 "</head>" +
                 "<body style='font-family: Arial, sans-serif; background-color: bluviolet; padding: 20px; text-align: center;'>" +
                 "<div style='background-color: white; padding: 40px; max-width: 500px; margin: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>" +
-                "<h1 style='color: #1a51bf;'>Benvenuto, " + "!</h1>" +
+                "<h1 style='color: bluviolet;'>Benvenuto" + "!</h1>" +
                 "<p style='color: #333;'>Grazie per esserti unito a Nagefy</p>" +
                 "<p style='color: #333;'>Siamo lieti di averti con noi.</p>" +
-                "<p style='color: #333;'>Puoi ora esplorare i nostri prodotti e iniziare a fare acquisti.</p>" +
-                "<a href='" + verifyLink + "'>" +
+                "<a href='" + verifyLink + "'/>" +
                 "style='background-color: bluviolet; color: white; padding: 15px 25px; border: none; border-radius: 5px; font-size: 16px; text-decoration: none; display: inline-block; margin-top: 20px;'>Conferma email</a>" +
                 "<p style='color: #333; margin-top: 20px;'>Se hai domande o hai bisogno di assistenza, non esitare a contattarci.</p>" +
                 "<small style='color: #333;'>Nagefy</small>" +
