@@ -67,9 +67,9 @@ public class AppointmentsController {
         return this.appointmentsService.findById(appointmentId);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
+    /*@PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE', 'USER')")*/
     public Appointment createAppointment(@RequestBody @Validated AppointmentDTO body, BindingResult validation){
         if (validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
