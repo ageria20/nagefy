@@ -42,7 +42,6 @@ public class AppointmentsController {
 
     @GetMapping("/free-slots")
     @ResponseStatus(HttpStatus.OK)
-
     public List<FreeSlotDTO> getFreeSlots(
             @RequestParam StaffIdDTO staff,
             @RequestParam String date, // Parametro date (solo la data)
