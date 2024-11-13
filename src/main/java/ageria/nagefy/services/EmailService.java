@@ -133,17 +133,16 @@ public class EmailService {
                 "<head>" +
                 "<meta charset='UTF-8'>" +
                 "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
-                "<title style='color: blueviolet'>Benvenuto su Nagefy!</title>" +
+                "<title>Benvenuto su Nagefy!</title>" +
                 "</head>" +
-                "<body style='font-family: Arial, sans-serif; background-color: bluviolet; padding: 20px; text-align: center;'>" +
+                "<body style='font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; text-align: center;'>" +
                 "<div style='background-color: white; padding: 40px; max-width: 500px; margin: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>" +
-                "<h1 style='color: bluviolet;'>Benvenuto" + "!</h1>" +
-                "<p style='color: #333;'>Grazie per esserti unito a Nagefy</p>" +
-                "<p style='color: #333;'>Siamo lieti di averti con noi.</p>" +
-                "<a href='" + verifyLink + "'>" +
-                "style='background-color: bluviolet; color: white; padding: 15px 25px; border: none; border-radius: 5px; font-size: 16px; text-decoration: none; display: inline-block; margin-top: 20px;'>Conferma email</a>" +
+                "<h1 style='color: #5a2d82;'>Benvenuto su Nagefy!</h1>" +
+                "<p style='color: #333;'>Grazie per esserti unito a Nagefy" + ".</p>" +
+                "<p style='color: #333;'>Siamo lieti di averti con noi e di iniziare questa nuova esperienza insieme.</p>" +
+                "<a href='" + verifyLink + "' style='background-color: #5a2d82; color: white; padding: 15px 25px; border-radius: 5px; font-size: 16px; text-decoration: none; display: inline-block; margin-top: 20px;'>Conferma Email</a>" +
                 "<p style='color: #333; margin-top: 20px;'>Se hai domande o hai bisogno di assistenza, non esitare a contattarci.</p>" +
-                "<small style='color: #333;'>Nagefy</small>" +
+                "<small style='color: #666;'>Nagefy © " + java.time.Year.now() + "</small>" +
                 "</div>" +
                 "</body>" +
                 "</html>";
@@ -168,22 +167,21 @@ public class EmailService {
         String verifyLink = "https://nagefy.netlify.app/verify-admin/" + toMail ;
 
 
-        String htmlBody =    "<!DOCTYPE html>" +
+        String htmlBody = "<!DOCTYPE html>" +
                 "<html lang='it'>" +
                 "<head>" +
                 "<meta charset='UTF-8'>" +
                 "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
-                "<title style='color: blueviolet'>Benvenuto su Nagefy!</title>" +
+                "<title>Benvenuto su Nagefy!</title>" +
                 "</head>" +
-                "<body style='font-family: Arial, sans-serif; background-color: bluviolet; padding: 20px; text-align: center;'>" +
+                "<body style='font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; text-align: center;'>" +
                 "<div style='background-color: white; padding: 40px; max-width: 500px; margin: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>" +
-                "<h1 style='color: bluviolet;'>Benvenuto" + "!</h1>" +
-                "<p style='color: #333;'>Grazie per esserti unito a Nagefy</p>" +
-                "<p style='color: #333;'>Siamo lieti di averti con noi.</p>" +
-                "<a href='" + verifyLink + "'/>" +
-                "style='background-color: bluviolet; color: white; padding: 15px 25px; border: none; border-radius: 5px; font-size: 16px; text-decoration: none; display: inline-block; margin-top: 20px;'>Conferma email</a>" +
+                "<h1 style='color: #5a2d82;'>Benvenuto su Nagefy!</h1>" +
+                "<p style='color: #333;'>Grazie per esserti unito a Nagefy" + ".</p>" +
+                "<p style='color: #333;'>Siamo lieti di averti con noi e di iniziare questa nuova esperienza insieme.</p>" +
+                "<a href='" + verifyLink + "' style='background-color: #5a2d82; color: white; padding: 15px 25px; border-radius: 5px; font-size: 16px; text-decoration: none; display: inline-block; margin-top: 20px;'>Conferma Email</a>" +
                 "<p style='color: #333; margin-top: 20px;'>Se hai domande o hai bisogno di assistenza, non esitare a contattarci.</p>" +
-                "<small style='color: #333;'>Nagefy</small>" +
+                "<small style='color: #666;'>Nagefy © " + java.time.Year.now() + "</small>" +
                 "</div>" +
                 "</body>" +
                 "</html>";

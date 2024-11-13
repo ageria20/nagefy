@@ -137,7 +137,6 @@ public class AppointmentsService {
 
         // Lista per memorizzare gli slot liberi divisi per ogni ora
         List<FreeSlotDTO> freeHourlySlots = new ArrayList<>();
-        List<FreeSlotDTO> printFreeHourlySlots = new ArrayList<>();
 
 
         LocalDateTime current = startOfDay;
