@@ -5,7 +5,6 @@ import ageria.nagefy.dto.*;
 import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.Treatment;
-import ageria.nagefy.entities.User;
 import ageria.nagefy.enums.Role;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.exceptions.NotFoundException;

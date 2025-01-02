@@ -1,9 +1,9 @@
 package ageria.nagefy.security;
 
 
+import ageria.nagefy.entities.Admin;
 import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
-import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -21,7 +21,7 @@ public class JWTTools {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String createUserToken(User user) {
+    public String createUserToken(Admin user) {
         return Jwts.builder()
                 .claim("role", user.getAuthorities().iterator().next().getAuthority())
                 .issuedAt(new Date(System.currentTimeMillis()))

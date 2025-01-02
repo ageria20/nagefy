@@ -3,9 +3,9 @@ package ageria.nagefy.services;
 
 import ageria.nagefy.dto.StaffLoginDTO;
 import ageria.nagefy.dto.UserLoginDTO;
+import ageria.nagefy.entities.Admin;
 import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
-import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.UnauthorizedException;
 import ageria.nagefy.security.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class AuthService {
 
 
     public String checkCredentialsAndGenerateToken(UserLoginDTO body){
-        User found = this.userService.findFromEmail(body.email());
+        Admin found = this.userService.findFromEmail(body.email());
 
         if(bcrypt.matches(body.password(), found.getPassword()) & found.isVerified()){
             return jwtTools.createUserToken(found);

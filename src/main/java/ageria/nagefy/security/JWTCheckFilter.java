@@ -1,9 +1,9 @@
 package ageria.nagefy.security;
 
 
+import ageria.nagefy.entities.Admin;
 import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
-import ageria.nagefy.entities.User;
 import ageria.nagefy.enums.Role;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.exceptions.UnauthorizedException;
@@ -72,7 +72,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             Authentication staffAuth = new UsernamePasswordAuthenticationToken(staffFromDB, null, staffFromDB.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(staffAuth);
         } else if (role.equals("ADMIN")) {
-            User adminFromDB = this.usersService.findById(UUID.fromString(id));
+            Admin adminFromDB = this.usersService.findById(UUID.fromString(id));
             if(adminFromDB == null){
                 throw new NotFoundException("USER NOT FOUND");
             }

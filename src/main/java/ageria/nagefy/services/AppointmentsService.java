@@ -66,7 +66,7 @@ public class AppointmentsService {
 
     public Appointment saveAppointment( AppointmentDTO body){
         Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staff()));
-        User userFromDB = this.usersService.findById(UUID.fromString(body.user()));
+        Admin userFromDB = this.usersService.findById(UUID.fromString(body.user()));
         List<Treatment> treatmentsFromDB = body.treatments().stream().map(treatment -> this.treatmentsService.findById(UUID.fromString(String.valueOf(treatment.getId())))).collect(Collectors.toList());
         LocalDateTime startAppointment = body.startTime();
         LocalDateTime endAppointment = startAppointment.plusMinutes(treatmentsFromDB.stream().mapToLong(duration -> duration.getDuration()).sum());
@@ -86,7 +86,7 @@ public class AppointmentsService {
 
     public Appointment saveAppointmentUser(UUID userId, AppointmentDTO body){
         Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staff()));
-        User userFromDB = this.usersService.findById(UUID.fromString(body.user()));
+        Admin userFromDB = this.usersService.findById(UUID.fromString(body.user()));
         List<Treatment> treatmentsFromDB = body.treatments().stream().map(treatment -> this.treatmentsService.findById(UUID.fromString(String.valueOf(treatment.getId())))).collect(Collectors.toList());
         LocalDateTime startAppointment = body.startTime();
         LocalDateTime endAppointment = startAppointment.plusMinutes(treatmentsFromDB.stream().mapToLong(duration -> duration.getDuration()).sum());
@@ -105,7 +105,7 @@ public class AppointmentsService {
     }
     public Appointment saveAppointmentStaff(UUID staffId, AppointmentDTO body){
         Staff staffFromDB = this.staffsService.findById(UUID.fromString(body.staff()));
-        User userFromDB = this.usersService.findById(UUID.fromString(body.user()));
+        Admin userFromDB = this.usersService.findById(UUID.fromString(body.user()));
         List<Treatment> treatmentsFromDB = body.treatments().stream().map(treatment -> this.treatmentsService.findById(UUID.fromString(String.valueOf(treatment.getId())))).collect(Collectors.toList());
         LocalDateTime startAppointment = body.startTime();
         LocalDateTime endAppointment = startAppointment.plusMinutes(treatmentsFromDB.stream().mapToLong(duration -> duration.getDuration()).sum());

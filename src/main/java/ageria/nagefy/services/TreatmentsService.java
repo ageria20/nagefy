@@ -3,7 +3,6 @@ package ageria.nagefy.services;
 
 import ageria.nagefy.dto.TreatmentDTO;
 import ageria.nagefy.entities.Treatment;
-import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.NotFoundException;
 import ageria.nagefy.repositories.TreatmentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
