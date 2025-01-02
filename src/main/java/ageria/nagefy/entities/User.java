@@ -26,7 +26,7 @@ import java.util.UUID;
 @JsonIgnoreProperties({"password", "authorities", "enabled", "accountNonLocked", "credentialsNonExpired", "accountNonExpired", "username"})
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type")
-public class User implements UserDetails {
+abstract class User implements UserDetails {
 
     @Id
     @GeneratedValue

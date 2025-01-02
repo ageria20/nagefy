@@ -6,7 +6,6 @@ import ageria.nagefy.dto.AppointmentUpdateStaffDTO;
 import ageria.nagefy.dto.FreeSlotDTO;
 import ageria.nagefy.dto.StaffIdDTO;
 import ageria.nagefy.entities.Appointment;
-import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.services.AppointmentsService;
 import ageria.nagefy.services.UsersService;

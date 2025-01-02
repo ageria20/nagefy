@@ -2,7 +2,6 @@ package ageria.nagefy.controllers;
 
 import ageria.nagefy.dto.TreatmentDTO;
 import ageria.nagefy.entities.Treatment;
-import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.services.TreatmentsService;
 import org.springframework.beans.factory.annotation.Autowired;

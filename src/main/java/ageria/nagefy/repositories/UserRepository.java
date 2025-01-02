@@ -1,8 +1,8 @@
 package ageria.nagefy.repositories;
 
+import ageria.nagefy.entities.Admin;
 import ageria.nagefy.entities.Client;
 import ageria.nagefy.entities.Staff;
-import ageria.nagefy.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, UUID> {
+public interface UserRepository extends JpaRepository<Admin, UUID> {
 
     boolean existsByEmail(String email);
-    User findByEmail(String email);
+    Admin findByEmail(String email);
 
 
     @Query("SELECT c FROM Client c WHERE LOWER(c.name) LIKE LOWER(CONCAT(:name, '%'))")

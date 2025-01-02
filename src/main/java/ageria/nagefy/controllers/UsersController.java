@@ -4,8 +4,8 @@ import ageria.nagefy.dto.AppointmentDTO;
 import ageria.nagefy.dto.UserDTO;
 import ageria.nagefy.dto.UserLoginDTO;
 import ageria.nagefy.dto.UserRespDTO;
+import ageria.nagefy.entities.Admin;
 import ageria.nagefy.entities.Appointment;
-import ageria.nagefy.entities.User;
 import ageria.nagefy.exceptions.BadRequestException;
 import ageria.nagefy.services.AppointmentsService;
 import ageria.nagefy.services.AuthService;
@@ -45,9 +45,9 @@ public class UsersController {
     @GetMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PreAuthorize("hasAnyAuthority('ADMIN','EMPLOYEE')")
-    public Page<User> findAll(@RequestParam(defaultValue = "0") int pages,
-                              @RequestParam(defaultValue = "10") int size,
-                              @RequestParam(defaultValue = "id") String sortBy) {
+    public Page<Admin> findAll(@RequestParam(defaultValue = "0") int pages,
+                               @RequestParam(defaultValue = "10") int size,
+                               @RequestParam(defaultValue = "id") String sortBy) {
         return this.userService.getAllUsers(pages, size, sortBy);
     }
 
@@ -55,7 +55,7 @@ public class UsersController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyAuthority('ADMIN','EMPLOYEE')")
-    public User creaUser(@RequestBody @Validated UserDTO body, BindingResult validation) throws MessagingException {
+    public Admin creaUser(@RequestBody @Validated UserDTO body, BindingResult validation) throws MessagingException {
         if(validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
@@ -65,7 +65,7 @@ public class UsersController {
 
     @GetMapping("/me")
     @ResponseStatus(HttpStatus.OK)
-    public User getUserMe(@AuthenticationPrincipal User currAuthUser){
+    public Admin getUserMe(@AuthenticationPrincipal Admin currAuthUser){
         return this.userService.findById(currAuthUser.getId());
     }
 
@@ -73,7 +73,7 @@ public class UsersController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyAuthority('ADMIN','EMPLOYEE')")
-    public User updateUser(@PathVariable UUID id, @RequestBody @Validated UserDTO body, BindingResult validation){
+    public Admin updateUser(@PathVariable UUID id, @RequestBody @Validated UserDTO body, BindingResult validation){
         if(validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
@@ -83,7 +83,7 @@ public class UsersController {
 
     @PutMapping("/me")
     @ResponseStatus(HttpStatus.CREATED)
-    public User updateUserProfile(@AuthenticationPrincipal User currAuthUser, @RequestBody UserDTO body ){
+    public Admin updateUserProfile(@AuthenticationPrincipal Admin currAuthUser, @RequestBody UserDTO body ){
         return this.userService.findByIdAndUpdate(currAuthUser.getId(), body);
     }
 
@@ -98,13 +98,13 @@ public class UsersController {
 
     // GET ME endpoint
     @GetMapping("/me/appointments")
-    public List<Appointment> getUserBooking(@AuthenticationPrincipal User currentAuthenticatedUser) {
+    public List<Appointment> getUserBooking(@AuthenticationPrincipal Admin currentAuthenticatedUser) {
         return this.appointmentsService.getAppointments((currentAuthenticatedUser.getId()));
     }
 
     @PostMapping("/me")
     @ResponseStatus(HttpStatus.CREATED)
-    public Appointment createAppointmentUser(@AuthenticationPrincipal User currUserAuth, @RequestBody @Validated AppointmentDTO body, BindingResult validation){
+    public Appointment createAppointmentUser(@AuthenticationPrincipal Admin currUserAuth, @RequestBody @Validated AppointmentDTO body, BindingResult validation){
         if(validation.hasErrors()){
             String msg = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
@@ -124,7 +124,7 @@ public class UsersController {
 
 
     @DeleteMapping("/me")
-    public void deleteProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
+    public void deleteProfile(@AuthenticationPrincipal Admin currentAuthenticatedUser) {
         this.userService.deleteUser(currentAuthenticatedUser.getId());
     }
 }

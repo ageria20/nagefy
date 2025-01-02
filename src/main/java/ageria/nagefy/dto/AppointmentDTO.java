@@ -3,7 +3,6 @@ package ageria.nagefy.dto;
 import ageria.nagefy.entities.Discount;
 import ageria.nagefy.entities.Staff;
 import ageria.nagefy.entities.Treatment;
-import ageria.nagefy.entities.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
